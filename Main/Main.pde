@@ -3,6 +3,7 @@ Table table;
 
 void setup() {
 
+  size (1200, 720);
   table = loadTable("flights_full.csv", "header");
 
   /*
@@ -11,12 +12,6 @@ void setup() {
     then add all our data from the csv file within the constructor of the flights class
     
   */
-  
-  
-  
-  
-  
-  
   
   
   /*
