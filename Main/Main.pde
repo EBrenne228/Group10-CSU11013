@@ -8,19 +8,10 @@ void setup() {
   flightList = new ArrayList <Flight>();
 
   /*
-    current code just displays the ability to read csv files
-    we would like to create an arrayList of type flight,
-    then add all our data from the csv file within the constructor of the flights class
-    
-  */
+  ArrayList of class Flight
   
-  
-  /*
-  for every row this code sets every value on the current row, to a variable, prints out all the data on the current row
-  then moves on to the next row until all rows are read
-  I may have put information in the incorrect order as my eyes are currently bloodshot, but it was able to read all available data in the csv file
+  Able to get individual Flight attributes, currently all strings
   */
-
   for (TableRow row : table.rows()) {
     String FlightDate  = row.getString("FL_DATE");
     String IATA_Code_Marketing_Airline = row.getString("MKT_CARRIER");

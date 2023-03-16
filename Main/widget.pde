@@ -1,20 +1,21 @@
-
-
-
-
 //I added a widget class-Ellen
 class Widget {
   int x, y, width, height;
-  String label; int event;
+  String label; 
+  int event;
   color widgetColor, labelColor, outline =#000000;
   PFont widgetFont;
 
-  Widget(int x,int y, int width, int height, String label,
-  color widgetColor, PFont widgetFont, int event){
-    this.x=x; this.y=y; this.width = width; this.height= height;
-    this.label=label; this.event=event; 
-    this.widgetColor=widgetColor; this.widgetFont=widgetFont;
-    labelColor= color(0);
+  Widget(int x,int y, int width, int height, String label, color widgetColor, PFont widgetFont, int event){
+    this.x = x; 
+    this.y = y; 
+    this.width = width; 
+    this.height = height;
+    this.label = label; 
+    this.event = event; 
+    this.widgetColor = widgetColor; 
+    this.widgetFont = widgetFont;
+    labelColor = color(0);
    }
    
 

@@ -4,10 +4,6 @@ class Flight {
   the purpose of Thursday, I am only concerned with
   reading our data and writing it to our flight class
   */
-  
-  
-  
-  
   String flightDate;
   String IATA_Code_Marketing_Airline;
   String flight_Number_marketing_Airline;
