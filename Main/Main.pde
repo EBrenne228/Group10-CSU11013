@@ -1,10 +1,11 @@
-
 Table table;
+ArrayList <Flight> flightList;
 
 void setup() {
 
   size (1200, 720);
   table = loadTable("flights_full.csv", "header");
+  flightList = new ArrayList <Flight>();
 
   /*
     current code just displays the ability to read csv files
@@ -40,7 +41,12 @@ void setup() {
     String Diverted = row.getString("DIVERTED");
     String Distance = row.getString("DISTANCE");
 
-    System.out.printf("%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s\n", FlightDate, IATA_Code_Marketing_Airline, Flight_Number_Marketing_Airline,
-      Origin, OriginCityName, OriginState, OriginWac, Dest, DestCityName, DestState, DestWac, CRSDepTime, DepTime, CRSArrTime, ArrTime, Cancelled, Diverted, Distance);
+    Flight tempFlight = new Flight(FlightDate, IATA_Code_Marketing_Airline, Flight_Number_Marketing_Airline, Origin, OriginCityName, OriginState, 
+    OriginWac, Dest, DestCityName, DestState, DestWac, CRSDepTime, DepTime, CRSArrTime, ArrTime, Cancelled, Diverted, Distance); 
+    flightList.add(tempFlight);
+  /* System.out.printf("%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s\n", FlightDate, IATA_Code_Marketing_Airline, Flight_Number_Marketing_Airline,
+      Origin, OriginCityName, OriginWac, Dest, DestCityName, DestWac, CRSDepTime, DepTime, CRSArrTime, ArrTime, Cancelled, Diverted, Distance); */
   }
+  System.out.println(flightList.get(1).originWac);
+  System.out.println(flightList.get(2).originWac);
 }
