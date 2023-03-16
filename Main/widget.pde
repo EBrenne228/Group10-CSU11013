@@ -1,3 +1,8 @@
+
+
+
+
+//I added a widget class-Ellen
 class Widget {
   int x, y, width, height;
   String label; int event;
