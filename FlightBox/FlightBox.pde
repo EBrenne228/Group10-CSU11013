@@ -47,5 +47,37 @@ void setup() {
     count = db.getInt("total");
     println(">>> count = " + count);
     println();
+
+    // First 10 flights
+    println("First 10 flights in the database");
+    db.query("SELECT * FROM flights LIMIT 10");
+
+    while (db.next()) {
+      flight = recordToFlight(db);
+      println(">>> " + flight);
+    }
+    println();
+
+    // First 10 flights from SFO to JFK
+    println("First 10 flights from SFO to JFK");
+    db.query("SELECT * FROM flights WHERE origin = 'SFO' AND dest = 'JFK' LIMIT 10");
+
+    while (db.next()) {
+      flight = recordToFlight(db);
+      println(">>> " + flight);
+    }
+    println();
+
+    // Top airlines to cancel flights
+    println("Top airlines to cancel flights");
+    db.query("SELECT mkt_carrier, COUNT(*) AS count " +
+             "FROM flights " +
+             "WHERE cancelled = 1 " +
+             "GROUP BY mkt_carrier " +
+             "ORDER BY count DESC");
+
+    while(db.next()) {
+      println(String.format(">>> %s %5d", db.getString("mkt_carrier"), db.getInt("count")));
+    }
   }
 }
