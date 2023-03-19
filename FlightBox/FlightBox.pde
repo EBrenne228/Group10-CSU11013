@@ -36,14 +36,14 @@ void setup() {
 
     // Number of flights originating in SFO that are destined for JKF
     println("Number of flights from SFO to JFK");
-    db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = 'SFO' AND dest = 'JFK' LIMIT 10");
+    db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = 'SFO' AND dest = 'JFK'");
     count = db.getInt("total");
     println(">>> count = " + count);
     println();
 
     // Number of flights originating in SFO that are destined for JKF on 7-Jan-2022
     println("Number of flights from SFO to JFK on 7-Jan-2022");
-    db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = 'SFO' AND dest = 'JFK' AND fl_date = '2022-01-07' LIMIT 10");
+    db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = 'SFO' AND dest = 'JFK' AND fl_date = '2022-01-07'");
     count = db.getInt("total");
     println(">>> count = " + count);
     println();
