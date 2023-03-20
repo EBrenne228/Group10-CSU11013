@@ -34,14 +34,6 @@ SQLite db; // Database connection
         println(">>> count = "+count);
         println();
 
-        // Originating airports
-        println("Originating airports (be patient - this query is slow)");
-        db.query("SELECT origin FROM flights GROUP BY origin");
-        while(db.next()){
-        println(">>> "+db.getString("origin"));
-        }
-        println();
-
         // Number of flights originating in SFO that are destined for JKF
         println("Number of flights from SFO to JFK");
         db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = 'SFO' AND dest = 'JFK'");
@@ -87,5 +79,13 @@ SQLite db; // Database connection
         while(db.next()){
         println(String.format(">>> %s %5d",db.getString("mkt_carrier"),db.getInt("count")));
         }
+
+        // Originating airports
+        println("Originating airports (be patient - this query is slow)");
+        db.query("SELECT origin FROM flights GROUP BY origin");
+        while(db.next()){
+        println(">>> "+db.getString("origin"));
+        }
+        println();
         }
         }
