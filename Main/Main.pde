@@ -3,7 +3,7 @@ ArrayList <Flight> flightList;
 
 void setup() {
 
-  size (1200, 720);
+  size (1280, 720);
   table = loadTable("flights_full.csv", "header");
   flightList = new ArrayList <Flight>();
 
