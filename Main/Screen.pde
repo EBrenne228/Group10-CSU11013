@@ -7,6 +7,7 @@ class Screen{
   Screen (color backgroundColour)
   {
     this.backgroundColour = backgroundColour;
+    widgetList = new ArrayList <Widget>();
   }
   
   void draw()

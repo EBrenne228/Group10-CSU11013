@@ -13,4 +13,14 @@ class Airport{
     this.xPos = xPos;
     this.yPos = yPos;
   }
+  
+  void setDepartureFlights(ArrayList <Flight> departureFlights)
+  {  
+    this.departingFlights = departureFlights;
+  }
+  
+  void setArrivalFlights (ArrayList <Flight> arrivalFlights)
+  {
+    this.arrivingFlights = arrivalFlights;
+  }
 }
