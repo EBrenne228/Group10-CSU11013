@@ -6,7 +6,7 @@ float[] sampleArr;
 void setup() {
 
   size (1280, 720);
-  background(0,0,200);
+  background(250);
   table = loadTable("flights_full.csv", "header");
   flightList = new ArrayList <Flight>();
   for (TableRow row : table.rows()) {
@@ -32,7 +32,7 @@ void setup() {
       OriginWac, Dest, DestCityName, DestState, DestWac, CRSDepTime, DepTime, CRSArrTime, ArrTime, Cancelled, Diverted, Distance);
     flightList.add(tempFlight);
     }
-    float[] sampleArr = {7000, 8600, 11800, 13000, 1000};
+    float[] sampleArr = {7000, 8600, 11800, 13000, 1000, 9000};
     bc = new BarChart(sampleArr);
   /* System.out.printf("%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s\n", FlightDate, IATA_Code_Marketing_Airline, Flight_Number_Marketing_Airline,
    Origin, OriginCityName, OriginWac, Dest, DestCityName, DestWac, CRSDepTime, DepTime, CRSArrTime, ArrTime, Cancelled, Diverted, Distance); */

@@ -2,44 +2,41 @@ class BarChart {
   final int MAXBAR=580;
   final int CHARTGAPX=180;
   final int CHARTGAPY=50;
-  final int CHARTX=1000;
+  final int CHARTX=800;
   final int CHARTY=600;
-  final int BARGAPX=50;
-  final int BARX=120;
+  
 
-  float tallyW1;
-  float tallyW2;
-  float tallyW3;
-  float tallyW4;
-  float tallyW5;
-  float heightWk1;
-  float heightWk2;
-  float heightWk3;
-  float heightWk4;
-  float heightWk5;
+  float magArr[];
+  float barx;
+  float barGapx;
+  float totalBar;
   float tallestBar;
+  int tallestIndex;
   float multiplier;
+  int barCount;
 
-  BarChart(float[] arr) {
-    tallyW1=arr[0];
-    tallyW2=arr[1];
-    tallyW3=arr[2];
-    tallyW4=arr[3];
-    tallyW5=arr[4];
-    tallestBar=tallyW1;
+  BarChart(float[] freqArr) {
+    
+    tallestBar=freqArr[0];
+    tallestIndex=0;
+    barCount=freqArr.length;
     //set tallest bar
 
-    for (int i=0; i<arr.length; i++) {
-      if (arr[i]>tallestBar)
-        tallestBar=arr[i];
+    for (int i=0; i<freqArr.length; i++) {
+      if (freqArr[i]>tallestBar)
+        tallestBar=freqArr[i];
+        tallestIndex=i;
     }
     multiplier=MAXBAR/tallestBar;
-
-    heightWk1=tallyW1*multiplier;
-    heightWk2=tallyW2*multiplier;
-    heightWk3=tallyW3*multiplier;
-    heightWk4=tallyW4*multiplier;
-    heightWk5=tallyW5*multiplier;
+    magArr=new float[freqArr.length];
+    
+    for (int i=0; i<magArr.length; i++) {
+      magArr[i]=freqArr[i]*multiplier;
+    }
+    
+    totalBar=(CHARTX)/barCount;
+    barx=totalBar*0.8;
+    barGapx=totalBar-barx;
   }
 
   void draw() {
@@ -49,16 +46,12 @@ class BarChart {
     //y axis
     line(CHARTGAPX, CHARTGAPY, CHARTGAPX, CHARTGAPY+CHARTY);
     stroke(0,200,0);
+    
+    for (int i=0; i<magArr.length; i++){
+      rect(CHARTGAPX+((i+1)*barGapx)+(i*barx), CHARTGAPY+CHARTY-magArr[i], barx, magArr[i]);
+      fill(100,100,250);
+      stroke(0);
+    }
 
-    rect(CHARTGAPX+(1*BARGAPX), CHARTGAPY+CHARTY-heightWk1, BARX, heightWk1);
-    fill(200, 0, 0);
-    rect(CHARTGAPX+(2*BARGAPX)+BARX, CHARTGAPY+CHARTY-heightWk2, BARX, heightWk2);
-    fill(200, 0, 0);
-    rect(CHARTGAPX+(3*BARGAPX)+2*BARX, CHARTGAPY+CHARTY-heightWk3, BARX, heightWk3);
-    fill(200, 0, 0);
-    rect(CHARTGAPX+(4*BARGAPX)+3*BARX, CHARTGAPY+CHARTY-heightWk4, BARX, heightWk4);
-    fill(200, 0, 0);
-    rect(CHARTGAPX+(5*BARGAPX)+4*BARX, CHARTGAPY+CHARTY-heightWk5, BARX, heightWk5);
-    fill(200, 0, 0);
   }
 }
