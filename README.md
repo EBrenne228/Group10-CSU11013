@@ -6,3 +6,5 @@ Ellen Brennan
 Dhruv Ranajit Choudhury
 
 Conor Daly
+
+James Treanor
