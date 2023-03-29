@@ -1,20 +1,22 @@
 class BarChart {
+  //barChart
   final int MAXBAR=580;
   final int CHARTGAPX=180;
   final int CHARTGAPY=50;
   final int CHARTX=800;
   final int CHARTY=600;
-  final float TEXTGAP=CHARTGAPX-CHARTGAPX/4;
+  final float TEXTGAP=CHARTGAPX-CHARTGAPX/5;
   final int INDENT = 12;
   //textBox
   final int TEXTBOXGAP=5;
   final int TEXTBOXX=80;
-  final int TEXTBOXY=TEXTBOXGAP*8;
+  final int TEXTBOXY=TEXTBOXGAP*7;
 
   PFont axisFont;
 
   String chartTitle;
   String yAxisTitle;
+  String xAxisTitle;
 
   float magArr[];
   float barx;
@@ -26,12 +28,21 @@ class BarChart {
   int barCount;
   float[] freqArr;
   int hoverCount;
+  int hoverBar;
 
   color barCol;
   color barHoverCol;
   color textBoxCol;
 
   boolean drawTextBox;
+  String depLoc;
+  String arrLoc;
+  String dist;
+  String arrTimeS;
+  String depTimeS;
+  String byStr;
+  String perStr;
+
 
   BarChart(float[] freqArr) {
     barCol=color(100, 100, 250);
@@ -39,6 +50,7 @@ class BarChart {
     textBoxCol=color(250);
     drawTextBox=false;
     this.freqArr=freqArr;
+    perStr="Week";
 
     axisFont=loadFont("ProcessingSans-Regular-30.vlw");
     tallestBar=freqArr[0];
@@ -46,6 +58,7 @@ class BarChart {
     barCount=freqArr.length;
     //set tallest bar
     hoverCount=0;
+    hoverBar=-1;
 
     for (int i=0; i<freqArr.length; i++) {
       if (freqArr[i]>tallestBar)
@@ -59,6 +72,7 @@ class BarChart {
       magArr[i]=freqArr[i]*multiplier;
     }
 
+    //set relative bar size
     totalBar=(CHARTX)/barCount;
     barx=totalBar*0.8;
     barGapx=totalBar-barx;
@@ -94,24 +108,61 @@ class BarChart {
       stroke(0);
       line(CHARTGAPX, CHARTGAPY, CHARTGAPX, CHARTGAPY+CHARTY);
 
-      chartTitle = "Flights per week from JFK";
+      //title
+      //title pre-flight info construct
+      if (flightCancel==true && flightDivert==true)
+        chartTitle = "Cancelled & Diverted Flights";
+      else if (flightDivert==true)
+        chartTitle = "Diverted Flights";
+      else if (flightCancel==true)
+        chartTitle = "Cancelled Flights";
+      else
+      chartTitle = "Flights";
+
+      //title post-flight info construct
+      if (depAirport==true && depCity==true && depState==true && depWac==true)
+        chartTitle+=" From "+depLoc;
+
+      if (destAirport==true && destCity==true && destState==true && destWac==true)
+        chartTitle+=" To "+arrLoc;
+      else if (distance==true)
+        chartTitle+=" "+dist;
+
+      if (arrTime==true && arrCRS==true)
+        chartTitle+=" "+arrTimeS;
+
+      if (arrTime==true && arrCRS==true && depTime==true && depCRS==true)
+        chartTitle+=" and"+depTime;
+      else if (depTime==true && depCRS==true)
+        chartTitle+= " "+depTimeS;
+
+      if (airline==true)
+        chartTitle+=" with the airline "+airline;
+      //construct y-axis title
+      yAxisTitle=chartTitle;
+      //sortation of data
+      if (byFilter==true) {
+        xAxisTitle=byStr;
+        chartTitle+=" by "+byStr;
+      } else if (perFilter==true) {
+        chartTitle+=" per "+perStr;
+        xAxisTitle=perStr;
+      }
+
       fill(0);
       textFont(axisFont);
       textSize(22);
       text(chartTitle, CHARTGAPX+CHARTX/2, CHARTGAPY);
-
-      yAxisTitle = "Flights";
-      fill(0);
       textFont(axisFont);
       textSize(20);
       text(yAxisTitle, CHARTGAPX/3, CHARTGAPY+CHARTY/2);
 
 
       for (int i=0; i<magArr.length; i++) {
-        float temp=freqArr[i];
-        temp=(int)temp;
+        float tempf=freqArr[i];
+        int temp=(int)tempf;
         String yAxis=""+temp;
-        String xAxis="Week "+(i+1);
+        String xAxis=xAxisTitle+" "+(i+1);
         color currBarCol;
         if (hoverBarChart==true && hoverBar==i) {
           currBarCol=barHoverCol;
@@ -134,17 +185,18 @@ class BarChart {
         textFont(axisFont);
         textSize(15);
         text(xAxis, TEXTGAP/8+CHARTGAPX+((i+1)*barGapx)+(i*barx), CHARTGAPY+CHARTY+20);
+
         //textBox
-        if (drawTextBox==true &&hoverBarChart==true && hoverBar==i) {
-            fill (textBoxCol);
-            stroke(230);
-            rect(mouseX, mouseY, -TEXTBOXX, -TEXTBOXY);
-            fill(0);
-            textFont(axisFont);
-            textSize(11);
-            text(xAxis, mouseX-TEXTBOXX+TEXTBOXGAP, mouseY-4*TEXTBOXGAP);
-            text(yAxisTitle+": "+yAxis, mouseX-TEXTBOXX+TEXTBOXGAP, mouseY-TEXTBOXGAP);
-          }
+        if (drawTextBox==true && hoverBarChart==true && hoverBar==i) {
+          fill (textBoxCol);
+          stroke(230);
+          rect(mouseX, mouseY, -TEXTBOXX, -TEXTBOXY);
+          fill(0);
+          textFont(axisFont);
+          textSize(11);
+          text(xAxis, mouseX-TEXTBOXX+TEXTBOXGAP, mouseY-4*TEXTBOXGAP);
+          text(yAxisTitle+": "+yAxis, mouseX-TEXTBOXX+TEXTBOXGAP, mouseY-TEXTBOXGAP);
+        }
       }
     }
   }

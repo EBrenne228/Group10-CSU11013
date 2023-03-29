@@ -1,29 +1,24 @@
+//flight construction
 Table table;
 ArrayList <Flight> flightList;
+//barchart
 BarChart bc;
 float[] sampleArr;
-int filterCodeY;
-int filterCodeX;
-int airportDep;
-int airportArr;
 boolean drawBarChart;
-int hoverBar;
 boolean hoverBarChart;
 int hoverCount;
 
-void setup() {
+boolean airline, flightNum, depAirport, depCity, depState, depWac, arrCRS, arrTime,
+destAirport, destCity, destState, destWac, depCRS, depTime, flightCancel, flightDivert, distance,
+byFilter, perFilter;
 
-  filterCodeY=0;
-  //1=
-  filterCodeX=0;
-  //1=minutes, 2=hours, 3=days, 4=weeks
-  airportDep=0;
-  airportArr=0;
-  hoverBar=-1;
+
+void setup() {
+  
   hoverBarChart=false;
   hoverCount=0;
-  
   drawBarChart=true;
+  perFilter=true;
   
   size (1280, 720);
   background(250);
@@ -52,7 +47,7 @@ void setup() {
       OriginWac, Dest, DestCityName, DestState, DestWac, CRSDepTime, DepTime, CRSArrTime, ArrTime, Cancelled, Diverted, Distance);
     flightList.add(tempFlight);
     }
-    float[] sampleArr = {7000, 8600, 1500, 1000, 9000};
+    float[] sampleArr = {7000, 8600, 1500, 1000, 9000, 7500, 4000, 5300, 6700, 800};
     bc = new BarChart(sampleArr);
   /* System.out.printf("%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s\n", FlightDate, IATA_Code_Marketing_Airline, Flight_Number_Marketing_Airline,
    Origin, OriginCityName, OriginWac, Dest, DestCityName, DestWac, CRSDepTime, DepTime, CRSArrTime, ArrTime, Cancelled, Diverted, Distance); */
