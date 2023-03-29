@@ -36,7 +36,11 @@ SQLite db; // Database connection
 
         // Number of flights originating in SFO that are destined for JKF
         println("Number of flights from SFO to JFK");
+<<<<<<< HEAD
+        db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = 'JFK' AND dest = 'JFK'");
+=======
         db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = 'SFO' AND dest = 'JFK'");
+>>>>>>> abebf0fc7f0d03a6ad3f2a7ba31469a23cd421b1
         count=db.getInt("total");
         println(">>> count = "+count);
         println();

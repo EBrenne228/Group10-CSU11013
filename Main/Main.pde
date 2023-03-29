@@ -1,43 +1,61 @@
-Table table;
 ArrayList <Flight> flightList;
+ArrayList <Screen> screenList;
+Screen screen1;
+import java.util.List;
+import de.bezier.data.sql.*;
+SQLite db; // Database connection
+PFont widgetFont;
 
-void setup() {
+ArrayList <Airport> airPortList;
+Airport JFK = new Airport("JFK");
+int countFromJFKweek1, countFromJFKweek2, countFromJFKweek3, countFromJFKweek4;
+BarChart bc;
+PFont ourFont;
 
-  size (1280, 720);
-  table = loadTable("flights_full.csv", "header");
-  flightList = new ArrayList <Flight>();
 
-  /*
-  ArrayList of class Flight
+void setup(){
+  size( 1280, 720);
+    airPortList = new ArrayList <Airport>();
+    db=new SQLite(this,"data/flights.sqlite");
+    ourFont = loadFont("AmericanTypewriter-Light-150.vlw");
+    textFont(ourFont);
+
+    if(!db.connect())
+    {
+        println("Problem opening database");
+    }
+    else
+    {
+        db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = 'JFK' AND fl_date BETWEEN '2022-01-01' AND '2022-01-07' ");
+        countFromJFKweek1 = db.getInt("total");
+        
+        db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = 'JFK' AND fl_date BETWEEN '2022-01-08' AND '2022-01-14' ");
+        countFromJFKweek2 = db.getInt("total");
+        
+        db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = 'JFK' AND fl_date BETWEEN '2022-01-015' AND '2022-01-21' ");
+        countFromJFKweek3 = db.getInt("total");
+        
+        db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = 'JFK' AND fl_date BETWEEN '2022-01-22' AND '2022-01-28' ");
+        countFromJFKweek4 = db.getInt("total");
+     }
+     
+      float [] flightsFromJFKweekly = {countFromJFKweek1, countFromJFKweek2, countFromJFKweek3, countFromJFKweek4};
+      bc = new BarChart(flightsFromJFKweekly);
+}
   
-  Able to get individual Flight attributes, currently all strings
-  */
-  for (TableRow row : table.rows()) {
-    String FlightDate  = row.getString("FL_DATE");
-    String IATA_Code_Marketing_Airline = row.getString("MKT_CARRIER");
-    String Flight_Number_Marketing_Airline = row.getString("MKT_CARRIER_FL_NUM");
-    String Origin = row.getString("ORIGIN");
-    String OriginCityName = row.getString("ORIGIN_CITY_NAME");
-    String OriginState = row.getString("ORIGIN_STATE_ABR");
-    String OriginWac = row.getString("ORIGIN_WAC");
-    String Dest = row.getString("DEST");
-    String DestCityName = row.getString("DEST_CITY_NAME");
-    String DestState = row.getString("DEST_STATE_ABR");
-    String DestWac = row.getString("DEST_WAC");
-    String CRSDepTime = row.getString("CRS_DEP_TIME");
-    String DepTime = row.getString("DEP_TIME");
-    String CRSArrTime = row.getString("CRS_ARR_TIME");
-    String ArrTime = row.getString("ARR_TIME");
-    String Cancelled = row.getString("CANCELLED");
-    String Diverted = row.getString("DIVERTED");
-    String Distance = row.getString("DISTANCE");
+  Flight recordToFlight(SQLite db) //Converts a database flight record into a Flight object.
+{
+      return new Flight( db.getString("fl_date"),db.getString("mkt_carrier"),db.getInt("mkt_carrier_fl_num"),
+      db.getString("origin"),db.getString("origin_city_name"),db.getString("origin_state_abr"),
+      db.getString("dest"),db.getString("dest_city_name"),db.getString("dest_state_abr"),
+      db.getBoolean("cancelled"),db.getBoolean("diverted"),
+      db.getInt("distance") );
+}
 
-    Flight tempFlight = new Flight(FlightDate, IATA_Code_Marketing_Airline, Flight_Number_Marketing_Airline, Origin, OriginCityName, OriginState, 
-    OriginWac, Dest, DestCityName, DestState, DestWac, CRSDepTime, DepTime, CRSArrTime, ArrTime, Cancelled, Diverted, Distance); 
-    flightList.add(tempFlight);
-  /* System.out.printf("%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s\n", FlightDate, IATA_Code_Marketing_Airline, Flight_Number_Marketing_Airline,
-      Origin, OriginCityName, OriginWac, Dest, DestCityName, DestWac, CRSDepTime, DepTime, CRSArrTime, ArrTime, Cancelled, Diverted, Distance); */
-  }
-  System.out.println(flightList.get(1).originWac);
-  System.out.println(flightList.get(2).originWac);
+void draw()
+{
+  background(255);
+  
+  text("Number of Flights Weekly from JFK", SCREEN_X + 100, SCREEN_Y/2);
+  bc.draw();
 }

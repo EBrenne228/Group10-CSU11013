@@ -7,10 +7,20 @@ class Airport{
   ArrayList <Flight> departingFlights;
   ArrayList <Flight> arrivingFlights;
   
-  Airport(String name, float xPos, float yPos)
+  Airport(String name)
   {
     this.name = name;
-    this.xPos = xPos;
-    this.yPos = yPos;
+    this.departingFlights = new ArrayList <Flight>();
+    this.arrivingFlights = new ArrayList <Flight>();
+  }
+  
+  void setDepartureFlights(ArrayList <Flight> departureFlights)
+  {  
+    this.departingFlights = departureFlights;
+  }
+  
+  void setArrivalFlights (ArrayList <Flight> arrivalFlights)
+  {
+    this.arrivingFlights = arrivalFlights;
   }
 }
