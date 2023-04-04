@@ -5,10 +5,14 @@ class Screen{
   ArrayList <Widget> widgetList; // Defined arrayList of Widgets in Screen Class and added methods related to adding, drawing and clicking widgets - Dhruv
   BarChart bc;
   ControlP5 CP5;
-  Screen (color backgroundColour)
+  PApplet parent;
+  DropdownList dropDownList;
+  Screen (color backgroundColour, PApplet parent )
   {
     this.backgroundColour = backgroundColour;
     widgetList = new ArrayList <Widget>();
+    this.parent = parent;
+    CP5 = new ControlP5(this.parent);
   }
   
   void draw()

@@ -50,7 +50,7 @@ class BarChart {
     textBoxCol=color(250);
     drawTextBox=false;
     this.freqArr=freqArr;
-    this.perStr=perStr;
+    this.perStr = perStr;
 
     axisFont=loadFont("ProcessingSans-Regular-30.vlw");
     tallestBar=freqArr[0];

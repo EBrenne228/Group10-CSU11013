@@ -16,6 +16,7 @@ class Widget {
     this.widgetColor = widgetColor; 
     this.widgetFont = widgetFont;
     labelColor = color(255);
+    textFont(widgetFont);
    }
    
 
@@ -24,10 +25,12 @@ class Widget {
     fill(widgetColor);
     rect(x,y,width,height);
     fill(labelColor);
-    text(label, x+ (width/2), y+(height/2));
+    text(label, x + 20, y + height - 10);
   }
-  int getEvent(int mX, int mY){
-     if(mX>x && mX < x+width && mY >y && mY <y+height){
+  int getEvent(int mX, int mY)
+  {
+     if(mX > x && mX < x + width && mY > y && mY < y + height)
+     {
         return event;
      }
      return EVENT_NULL;
