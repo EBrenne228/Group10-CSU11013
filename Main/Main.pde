@@ -32,7 +32,7 @@ destAirport, destCity, destState, destWac, depCRS, depTime, flightCancel, flight
 byFilter, perFilter;
 
 //widgets and buttons
-Widget chartScreenButton, heatMapScreenButton, homePageScreenButton;
+Widget chartScreenButton, mapScreenButton, homeScreenButton;
 Screen homeScreen, chartScreen, heatMapScreen, currentScreen;
 
 ControlP5 CP5;
@@ -42,33 +42,43 @@ DropdownList dropDownList, departureDDL;
 
 
 void setup(){
-  size( 1280, 720);
+  size(1280, 720);
+  
+  db = new SQLite(this,"data/flights.sqlite"); // currently this database is using 100k flights for faster queries, once we optimise will shift to the largest dataset
+  db.connect();
+  thread("initialQuery"); // runs inital queries/loading of data on a separate thread from the "Animation" thread.
+
   ourFont = loadFont("AmericanTypewriter-Light-150.vlw");
-  widgetFont = loadFont("ProcessingSans-Regular-30.vlw");
+  widgetFont = loadFont("AmericanTypewriter-Light-25.vlw");
     
-    CP5 = new ControlP5(this);
-    flightMap = new HashMap<Integer, Flight>();
-    airportMap = new HashMap<String, Flight>();
+  CP5 = new ControlP5(this);
+    
+  flightMap = new HashMap<Integer, Flight>();
+  airportMap = new HashMap<String, Flight>();
     
      
-   chartScreenButton = new Widget(500, 500, 125, 50, "Charts", color(#0E8158), widgetFont, EVENT_TO_CHART_SCREEN);
+   chartScreenButton = new Widget(200, 200, 125, 50, "Charts", color(#0E8158), widgetFont, EVENT_TO_CHARTS);
+   homeScreenButton = new Widget(500, 500, 200, 75, "Home Screen", color(#0E8158), widgetFont, EVENT_TO_HOME);
+   
    homeScreen = new Screen(color(0), this);
    chartScreen = new Screen (color(0), this);
+   currentScreen = homeScreen;
+   homeScreen.addWidget(chartScreenButton);
+   chartScreen.addWidget(homeScreenButton);
+     
    
    chartScreen.dropDownList = chartScreen.CP5.addDropdownList("Select Origin")
                    .setPosition(50,20);
-    departureDDL = CP5.addDropdownList("Select Destination")
+   departureDDL = CP5.addDropdownList("Select Destination")
                    .setPosition(SCREEN_X - 150 ,20);
   
      
-   currentScreen = homeScreen;
+  currentScreen = homeScreen;
                    
-    homeScreen.addWidget(chartScreenButton);
+ 
      
-    originatingAirportList = new ArrayList <Airport>();
-     destinationAirportList = new ArrayList <Airport>();    
-    db = new SQLite(this,"data/flights.sqlite"); // currently this database is using 100k flights for faster queries, once we optimise will shift to the largest dataset
-    
+  originatingAirportList = new ArrayList <Airport>();
+  destinationAirportList = new ArrayList <Airport>();    
 
   hoverBarChart=false;
   hoverCount=0;
@@ -79,16 +89,16 @@ void setup(){
   depState=true; 
   depWac = true;
   
-  
-    if(!db.connect())
-    {
-        println("Problem opening database");
-    }
+
+  if(!db.connect())
+  {
+      println("Problem opening database");
+  }
     
-    thread("initialQuery");
+  
 //    else
 //    {
-      
+    
 //        db.query("SELECT origin FROM flights GROUP BY origin");
 //        while (db.next())
 //        {
@@ -101,13 +111,13 @@ void setup(){
 //          destinationAirportList.add(new Airport(db.getString("dest")));
 //          departureDDL.addItem(db.getString("dest"), 1);
 //        }
-        
+      
 //     }
 //      flightsFromOriginweekly = new float[4];
 //      flightsFromOriginDaily = new float[6];
 //      bc = new BarChart( flightsFromOriginDaily, " ");
 //      bc.depLoc = " ";
-     
+   
 //}
 }
   Flight recordToFlight(SQLite db) //Converts a database flight record into a Flight object.
@@ -119,30 +129,31 @@ void setup(){
       db.getInt("distance") );
 }
 
-void initialQuery ()
+void initialQuery()
 {
-      //db.query("SELECT origin FROM flights GROUP BY origin");
-      //while (db.next())
-      //{
-      //  originatingAirportList.add(new Airport(db.getString("origin")));
-      //  chartScreen.dropDownList.addItem(db.getString("origin"), 1);
-      //}
+     db.query("SELECT  origin FROM flights GROUP BY origin");
+     while (db.next())
+      {
+        originatingAirportList.add(new Airport(db.getString("origin")));
+        chartScreen.dropDownList.addItem(db.getString("origin"), 1);
+      }
       
-      //db.query("SELECT dest FROM flights GROUP BY dest");
-      //while (db.next())
-      //{
-      //  destinationAirportList.add(new Airport(db.getString("dest")));
-      //  departureDDL.addItem(db.getString("dest"), 1);
-      //}
-      
-      int hash = 0;
+      db.query("SELECT dest FROM flights GROUP BY dest");
+      while (db.next())
+      {
+        destinationAirportList.add(new Airport(db.getString("dest")));
+        departureDDL.addItem(db.getString("dest"), 1);
+      }
+    
+      int hashKey = 0;
+      Flight temp;
       db.query("SELECT * FROM flights"); 
       while (db.next())
       {
-        Flight temp = recordToFlight(db);
-        flightMap.put(hash, temp);
-        println(hash, temp;
-        hash++;
+        temp = recordToFlight(db);
+        flightMap.put(hashKey, temp);
+        println(hashKey, temp);
+        hashKey++;
       }
 }
 
@@ -152,7 +163,7 @@ void draw()
   background(255);
   //bc.draw();
   //bc.barHover(mouseX, mouseY);
-    currentScreen.draw();
+   currentScreen.draw();
 
 }
 
@@ -210,8 +221,11 @@ void mousePressed()
   int event = currentScreen.getEvent();
   switch (event)
   {
-     case EVENT_TO_CHART_SCREEN:
+     case EVENT_TO_CHARTS:
        currentScreen = chartScreen;
-       println(flightMap.get(1));
+       break;
+     case EVENT_TO_HOME:
+       currentScreen = homeScreen;
+       break;
   }
 }
