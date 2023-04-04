@@ -44,13 +44,13 @@ class BarChart {
   String perStr;
 
 
-  BarChart(float[] freqArr) {
+  BarChart(float[] freqArr, String perStr) {
     barCol=color(100, 100, 250);
     barHoverCol=color(80, 200, 80);
     textBoxCol=color(250);
     drawTextBox=false;
     this.freqArr=freqArr;
-    perStr="Week";
+    this.perStr=perStr;
 
     axisFont=loadFont("ProcessingSans-Regular-30.vlw");
     tallestBar=freqArr[0];

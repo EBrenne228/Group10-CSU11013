@@ -3,7 +3,8 @@
 class Screen{
   color backgroundColour;
   ArrayList <Widget> widgetList; // Defined arrayList of Widgets in Screen Class and added methods related to adding, drawing and clicking widgets - Dhruv
-  
+  BarChart bc;
+  ControlP5 CP5;
   Screen (color backgroundColour)
   {
     this.backgroundColour = backgroundColour;

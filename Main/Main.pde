@@ -9,8 +9,7 @@ Screen screen1;
 SQLite db; // Database connection
 PFont widgetFont;
 
-ArrayList <Airport> originatingAirportList;
-Airport JFK = new Airport("JFK");
+ArrayList <Airport> originatingAirportList, destinationAirportList;
 BarChart bc;
 PFont ourFont;
 
@@ -30,7 +29,7 @@ destAirport, destCity, destState, destWac, depCRS, depTime, flightCancel, flight
 byFilter, perFilter;
 
 ControlP5 CP5;
-DropdownList dropDownList;
+DropdownList dropDownList, departureDDL;
 
 
 
@@ -40,11 +39,19 @@ void setup(){
     
     CP5 = new ControlP5(this);
     dropDownList = CP5.addDropdownList("Select Origin")
-                   .setPosition(50,200);
+                   .setPosition(50,20);
+    departureDDL = CP5.addDropdownList("Select Destination")
+                   .setPosition(SCREEN_X - 150 ,20);
+     
+                   
+     
+                   
+                   
     
      
     originatingAirportList = new ArrayList <Airport>();
-    db = new SQLite(this,"data/flights.sqlite");
+     destinationAirportList = new ArrayList <Airport>();    
+    db = new SQLite(this,"data/flights.sqlite"); // currently this database is using 100k flights for faster queries, once we optimise will shift to the largest dataset
     ourFont = loadFont("AmericanTypewriter-Light-150.vlw");
     textFont(ourFont);
     
@@ -53,6 +60,10 @@ void setup(){
   hoverCount=0;
   drawBarChart=true;
   perFilter=true;
+  depAirport=true;
+  depCity=true;
+  depState=true; 
+  depWac = true;
   
 
 
@@ -62,24 +73,25 @@ void setup(){
     }
     else
     {
-        int count = 0;
       
         db.query("SELECT origin FROM flights GROUP BY origin");
         while (db.next())
         {
           originatingAirportList.add(new Airport(db.getString("origin")));
-          count++;
+          dropDownList.addItem(db.getString("origin"), 1);
         }
-        println(count);
+        db.query("SELECT dest FROM flights GROUP BY dest");
+        while (db.next())
+        {
+          destinationAirportList.add(new Airport(db.getString("dest")));
+          departureDDL.addItem(db.getString("dest"), 1);
+        }
         
-         for (int index = 0; index < originatingAirportList.size(); index++)
-       {
-         dropDownList.addItem(originatingAirportList.get(index).name, 1);  //adding origin ariports to the drop down list 
-       }
      }
       flightsFromOriginweekly = new float[4];
-      flightsFromOriginDaily = new float[7];
-      bc = new BarChart( flightsFromOriginDaily);
+      flightsFromOriginDaily = new float[6];
+      bc = new BarChart( flightsFromOriginDaily, " ");
+      bc.depLoc = " ";
      
 }
   Flight recordToFlight(SQLite db) //Converts a database flight record into a Flight object.
@@ -117,40 +129,38 @@ void controlEvent(ControlEvent theEvent) {
     println("event from group : "+theEvent.getGroup().getValue()+" from "+theEvent.getGroup());
   } 
   else if (theEvent.isController()) {
-        String origin = originatingAirportList.get((int)theEvent.getController().getValue()).name;
-        db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = '%s' AND fl_date ='2022-01-01'", origin);
-        countFromOriginDay1 = db.getInt("total");
+          String origin = originatingAirportList.get((int)theEvent.getController().getValue()).name;
+          bc.depLoc = origin;
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = '%s' AND fl_date ='2022-01-01'", origin);
+          countFromOriginDay1 = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = '%s' AND fl_date = '2022-01-02' ", origin);
+          countFromOriginDay2 = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = '%s' AND fl_date = '2022-01-03'", origin);
+          countFromOriginDay3 = db.getInt("total");
         
-        db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = '%s' AND fl_date = '2022-01-02' ", origin);
-        countFromOriginDay2 = db.getInt("total");
-        
-        db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = '%s' AND fl_date = '2022-01-03'", origin);
-        countFromOriginDay3 = db.getInt("total");
-      
-        db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = '%s' AND fl_date = '2022-01-04'  ", origin);
-        countFromOriginDay4 = db.getInt("total");
-        
-        db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = '%s' AND fl_date = '2022-01-05'  ", origin);
-        countFromOriginDay5 = db.getInt("total");
-        
-        db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = '%s' AND fl_date = '2022-01-06'  ", origin);
-        countFromOriginDay6 = db.getInt("total");
-        
-        db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = '%s' AND fl_date = '2022-01-07'  ", origin);
-        countFromOriginDay7 = db.getInt("total");
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = '%s' AND fl_date = '2022-01-04'  ", origin);
+          countFromOriginDay4 = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = '%s' AND fl_date = '2022-01-05'  ", origin);
+          countFromOriginDay5 = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = '%s' AND fl_date = '2022-01-06'  ", origin);
+          countFromOriginDay6 = db.getInt("total");
        
         
-      flightsFromOriginDaily[0] = countFromOriginDay1;
-      flightsFromOriginDaily[1] = countFromOriginDay2;
-      flightsFromOriginDaily[2] = countFromOriginDay3;
-      flightsFromOriginDaily[3] = countFromOriginDay4;
-      flightsFromOriginDaily[4] = countFromOriginDay5;
-      flightsFromOriginDaily[5] = countFromOriginDay6;
-      
-      println(originatingAirportList.size());
-      
-      bc = new BarChart(flightsFromOriginDaily);
-      bc.chartTitle = "Flights per week from " + origin;
-      println("event from controller : "+theEvent.getController().getValue()+" from "+theEvent.getController());
+          flightsFromOriginDaily[0] = countFromOriginDay1;
+          flightsFromOriginDaily[1] = countFromOriginDay2;
+          flightsFromOriginDaily[2] = countFromOriginDay3;
+          flightsFromOriginDaily[3] = countFromOriginDay4;
+          flightsFromOriginDaily[4] = countFromOriginDay5;
+          flightsFromOriginDaily[5] = countFromOriginDay6;
+          
+          println(originatingAirportList.size());
+          
+          bc = new BarChart(flightsFromOriginDaily, "Day");
+          bc.depLoc = origin;
+          println("event from controller : " + theEvent.getController().getValue() + " from " + theEvent.getController());
   }
 }
