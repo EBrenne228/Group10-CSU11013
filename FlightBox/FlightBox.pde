@@ -28,6 +28,7 @@ SQLite db; // Database connection
         // Samples of some of the different types of queries we can run against the database
 
         // Number of flights in the database
+        
         println("Number of flight in the database");
         db.query("SELECT COUNT(*) AS total FROM flights");
         int count=db.getInt("total");
@@ -87,5 +88,7 @@ SQLite db; // Database connection
         println(">>> "+db.getString("origin"));
         }
         println();
+        
+        // 
         }
         }
