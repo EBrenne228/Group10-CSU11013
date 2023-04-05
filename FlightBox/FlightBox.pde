@@ -2,6 +2,7 @@ import java.util.List;
 import de.bezier.data.sql.*;
 SQLite db; // Database connection
 
+
         /*
          * Convert a database flight record into a Flight object.
          */
@@ -16,7 +17,6 @@ SQLite db; // Database connection
         }
 
         void setup(){
-  size( 450, 450 );
 
         Flight flight;
 
@@ -34,10 +34,15 @@ SQLite db; // Database connection
         int count=db.getInt("total");
         println(">>> count = "+count);
         println();
+        
+        
+          
 
         // Number of flights originating in SFO that are destined for JKF
-        println("Number of flights from SFO to JFK");
-        db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = 'SFO' AND dest = 'JFK'");
+        String originAirport = "DTW";
+        String destinationAirport = "LAX";
+        println("Number of flights from " + originAirport + " to " + destinationAirport);
+        db.query("SELECT COUNT(*) AS total FROM flights WHERE origin = '%s' AND dest = '%s'", originAirport, destinationAirport);
         count=db.getInt("total");
         println(">>> count = "+count);
         println();
@@ -81,14 +86,22 @@ SQLite db; // Database connection
         println(String.format(">>> %s %5d",db.getString("mkt_carrier"),db.getInt("count")));
         }
 
-        // Originating airports
-        println("Originating airports (be patient - this query is slow)");
-        db.query("SELECT origin FROM flights GROUP BY origin");
-        while(db.next()){
-        println(">>> "+db.getString("origin"));
         }
-        println();
+        }
         
-        // 
+                // Method for heatmap to find number of flights leaving each state
+        public int flightsFromEachState (String originState) {
+          println("Number of flights from " + originState);
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE origin_state_abr = '%s'", originState);
+          int count=db.getInt("total");
+          return count;
         }
+        
+        public int flightsToEachState (String destinationState) {
+          println("Number of flights to " + destinationState);
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest_state_abr = '%s'", destinationState);
+          int count=db.getInt("total");
+          return count;
         }
+        
+        // origin or destinationState in should be in format: "TX", "NY" for example.
