@@ -26,7 +26,19 @@ class America {
  
   
   
+  void blankAmerica(){
+    for(int i = 0; i <6; i++){
+      colourCodes.add(#f7f7f7);
+    }
+  }
   
+  
+  int [] emptyData(){
+    int[] zeros = new int[50];
+    Arrays.fill(zeros, 0);
+    
+    return zeros;
+  }
 
   void setHeatMapRanges(int range1, int range2, int range3, int range4, int range5) {
     //set the range boundaries 

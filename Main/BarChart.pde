@@ -155,7 +155,7 @@ class BarChart {
       text(chartTitle, CHARTGAPX+CHARTX/2, CHARTGAPY);
       textFont(axisFont);
       textSize(20);
-      text(yAxisTitle, CHARTGAPX/3, CHARTGAPY+CHARTY/2);
+      text(yAxisTitle, CHARTGAPX/3 - 20, CHARTGAPY+CHARTY/2);
 
 
       for (int i=0; i<magArr.length; i++) {

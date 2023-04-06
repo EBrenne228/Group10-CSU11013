@@ -32,7 +32,7 @@ CREATE TABLE flights_stage1
 );
 
 -- Load flights into a temporary table
-.import --csv --skip 1 flights100k.csv flights_stage1
+.import --csv --skip 1 flights_full.csv flights_stage1
 
 -- Turn departure and arrival times into actual TIME values
 UPDATE flights_stage1
