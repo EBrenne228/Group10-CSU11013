@@ -3,12 +3,20 @@ Table table;
 ArrayList <Flight> flightList;
 //barchart
 BarChart bc;
+Histogram hg;
+PiChart pi;
 float[] sampleArr;
 boolean drawBarChart;
+boolean drawHistogram;
 boolean hoverBarChart;
 int hoverCount;
+//histogram
+boolean hoverHistogram;
+//piChart
+boolean drawPi;
+boolean hoverPi;
 
-boolean airline, flightNum, depAirport, depCity, depState, depWac, arrCRS, arrTime,
+static boolean airline, flightNum, depAirport, depCity, depState, depWac, arrCRS, arrTime,
 destAirport, destCity, destState, destWac, depCRS, depTime, flightCancel, flightDivert, distance,
 byFilter, perFilter;
 
@@ -17,7 +25,9 @@ void setup() {
   
   hoverBarChart=false;
   hoverCount=0;
-  drawBarChart=true;
+  //drawBarChart=true;
+  //drawHistogram=true;
+  drawPi=true;
   perFilter=true;
   
   size (1280, 720);
@@ -47,10 +57,11 @@ void setup() {
       OriginWac, Dest, DestCityName, DestState, DestWac, CRSDepTime, DepTime, CRSArrTime, ArrTime, Cancelled, Diverted, Distance);
     flightList.add(tempFlight);
     }
-    float[] sampleArr = {7000, 8600, 1500, 1000, 9000, 7500, 4000, 5300, 6700, 800};
+    float[] sampleArr = {1, 2, 2, 1, 4};
     bc = new BarChart(sampleArr);
-  /* System.out.printf("%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s\n", FlightDate, IATA_Code_Marketing_Airline, Flight_Number_Marketing_Airline,
-   Origin, OriginCityName, OriginWac, Dest, DestCityName, DestWac, CRSDepTime, DepTime, CRSArrTime, ArrTime, Cancelled, Diverted, Distance); */
+    String[] sampleTitles = {"JFK", "Houston", "LAX", "ATL", "STL"};
+    hg = new Histogram(sampleArr, sampleTitles);
+    pi=new PiChart(sampleArr, sampleTitles);
 }
 
 
@@ -59,4 +70,7 @@ void setup() {
 void draw(){
   bc.draw();
   bc.barHover(mouseX, mouseY);
+  hg.draw();
+  hg.barHover(mouseX, mouseY);
+  pi.draw();
 }
