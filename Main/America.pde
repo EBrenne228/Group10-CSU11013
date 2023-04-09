@@ -4,6 +4,7 @@ class America {
   PShape usaMap;
   ArrayList<Integer> colourCodes = new ArrayList<Integer>();  //the colour codes go into an int array, as color is a primitive type
   PShape[] usaStates; //array of state shapes from main
+  String current = "Flights per State";
   America(PShape usa, PShape[] states){  //constructor, takes country map and states map
     usaMap = usa;
     usaStates = states;

@@ -4,36 +4,36 @@ class Screen {
   color backgroundColour;
   ArrayList <Widget> widgetList; // Defined arrayList of Widgets in Screen Class and added methods related to adding, drawing and clicking widgets - Dhruv
   BarChart bc;
-  ControlP5 CP5;
+  Histogram hg;
+  PiChart pic;
   PApplet parent;
   DropdownList dropDownList;
   
   
   
   //attributes that define the type of screen it is
-  boolean isLoading,isHeatMap, isBarChart;
+  boolean isLoading,isHeatMap, isBarChart, isarrivals, isdepartures;
   boolean drawUi = false;
   
   
   
   
-  Screen (color backgroundColour, PApplet parent, boolean loading, boolean heatMap, boolean barChart )
+  Screen (color backgroundColour, boolean loading, boolean heatMap, boolean barChart, boolean arrivals, boolean departures )
   {
     this.backgroundColour = backgroundColour;
     //this.widgetList = theButtons;
-    
     isLoading = loading;
     isHeatMap = heatMap;
     isBarChart = barChart;
+    this.isarrivals = arrivals;
+    this.isdepartures = departures;
     
     if (isBarChart)
     {
       float [] floatArr = new float[3];
-      bc = new BarChart(floatArr, " ");
+      bc = new BarChart(floatArr);
     }
     widgetList = new ArrayList <Widget>();
-    this.parent = parent;
-    CP5 = new ControlP5(this.parent);
   }
   
   void draw()
@@ -56,7 +56,6 @@ class Screen {
         widget.draw();
       }  
     }
-  
   }
   
 //else   {      background(backgroundColour);
@@ -67,7 +66,9 @@ class Screen {
 //}
     else if (isHeatMap){
 
-     usa.draw(zeros);
+     usa.draw(flightsPerState);
+     usa.rangePalette();
+     
     
      for (Widget widget: widgetList)
     {
@@ -77,18 +78,46 @@ class Screen {
     
     }
     
-    else {
-      text("Number of Flights Weekly from JFK", SCREEN_X + 100, SCREEN_Y/2);
+    else if(isarrivals){
+      arrivals.draw(flightsToStates);
+      arrivals.rangePalette();
       
+           for (Widget widget: widgetList)
+    {
+      widget.draw();
+    }
+      
+      
+      
+    }
+    
+       else if (isdepartures){
+      departures.draw(flightsFromStates);
+      departures.rangePalette();
+      
+      for (Widget widget: widgetList)
+    {
+      widget.draw();
+    }
+      
+    
+    }
+    
+    else if(drawHistogram == true)
+    {
+      hg.draw();
+    }
+    
+    else {      
       background(backgroundColour);
       bc.draw();
       for (Widget widget: widgetList)
       {
         widget.draw();
       }
-      
-      
-    }
+   }
+   
+   
    
 
     

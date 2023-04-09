@@ -44,13 +44,13 @@ class BarChart {
   String perStr;
 
 
-  BarChart(float[] freqArr, String perStr) {
+  BarChart(float[] freqArr) {
     barCol=color(100, 100, 250);
     barHoverCol=color(80, 200, 80);
     textBoxCol=color(250);
     drawTextBox=false;
     this.freqArr=freqArr;
-    this.perStr = perStr;
+    perStr="Week";
 
     axisFont=loadFont("ProcessingSans-Regular-30.vlw");
     tallestBar=freqArr[0];
@@ -99,13 +99,13 @@ class BarChart {
   }
 
   void draw() {
-    background(250);
+    background(0);
     if (drawBarChart==true) {
       //x axis
-      stroke(0);
+      stroke(255);
       line(CHARTGAPX, CHARTGAPY+CHARTY, CHARTGAPX+CHARTX, CHARTGAPY+CHARTY);
       //y axis
-      stroke(0);
+      stroke(255);
       line(CHARTGAPX, CHARTGAPY, CHARTGAPX, CHARTGAPY+CHARTY);
 
       //title
@@ -149,13 +149,13 @@ class BarChart {
         xAxisTitle=perStr;
       }
 
-      fill(0);
+      fill(255);
       textFont(axisFont);
       textSize(22);
       text(chartTitle, CHARTGAPX+CHARTX/2, CHARTGAPY);
       textFont(axisFont);
       textSize(20);
-      text(yAxisTitle, CHARTGAPX/3 - 20, CHARTGAPY+CHARTY/2);
+      text(yAxisTitle, CHARTGAPX/3 - 30, CHARTGAPY+CHARTY/2);
 
 
       for (int i=0; i<magArr.length; i++) {
