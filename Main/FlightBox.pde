@@ -6,15 +6,14 @@
         /*
          * Convert a database flight record into a Flight object.
          */
-        //Flight recordToFlight(SQLite db){
-        //return new Flight(
-        //db.getString("fl_date"),db.getString("mkt_carrier"),db.getInt("mkt_carrier_fl_num"),
-        //db.getString("origin"),db.getString("origin_city_name"),db.getString("origin_state_abr"),
-        //db.getString("dest"),db.getString("dest_city_name"),db.getString("dest_state_abr"),
-        //db.getBoolean("cancelled"),db.getBoolean("diverted"),
-        //db.getInt("distance")
-        //);
-        //}
+        Flight recordToFlight(SQLite db) 
+        {
+          return new Flight( db.getString("fl_date"),db.getString("mkt_carrier"),db.getInt("mkt_carrier_fl_num"),
+          db.getString("origin"),db.getString("origin_city_name"),db.getString("origin_state_abr"),
+          db.getString("dest"),db.getString("dest_city_name"),db.getString("dest_state_abr"),
+          db.getBoolean("cancelled"),db.getBoolean("diverted"),
+          db.getInt("distance") );
+        }
 
         //void setup(){
 
@@ -87,19 +86,25 @@
         //}
         //}
         
-                // Method for heatmap to find number of flights leaving each state
-        public int flightsFromEachState (String originState) {
-          println("Number of flights from " + originState);
+       /*
+        * Method for heatmap to find number of flights leaving a state
+        *
+        * originState should be in format: "TX", "NY" for example.
+        */       
+        public int flightsFromEachState (String originState) 
+        {
           db.query("SELECT COUNT(*) AS total FROM flights WHERE origin_state_abr = '%s'", originState);
-          int count=db.getInt("total");
-          return count;
+          return db.getInt("total");
         }
         
-        public int flightsToEachState (String destinationState) {
-          println("Number of flights to " + destinationState);
+       /*
+        * Method for heatmap to find number of flights to a state
+        *
+        * destinationState should be in format: "TX", "NY" for example.
+        */       
+        public int flightsToEachState (String destinationState) 
+        {
           db.query("SELECT COUNT(*) AS total FROM flights WHERE dest_state_abr = '%s'", destinationState);
-          int count=db.getInt("total");
-          return count;
+          return db.getInt("total");
         }
         
-        // origin or destinationState in should be in format: "TX", "NY" for example.
