@@ -95,7 +95,7 @@ class Screen {
     }
     
     
-    else {      
+    else if (isBarChart){      
       background(backgroundColour);
       bc.draw();
       for (Widget widget: widgetList)
@@ -104,9 +104,25 @@ class Screen {
       }
    }
    
+   else if (drawHistogram)
+   {
+     hg.draw();
+     for (Widget widget: widgetList)
+     {
+       widget.draw();
+     }
+   }
+   
+   else {
+     background(backgroundColour);
+     for (Widget widget: widgetList)
+      {
+        widget.draw();
+      }
+   }
    
    
-
+   
     
   }
   
@@ -118,12 +134,6 @@ class Screen {
  
   int getEvent()
   {
-     //for (Widget widget : widgetList)
-     //{
-     //  return (widget.getEvent(mouseX, mouseY));
-     //}
-     
-     
      for (int index = 0; index < widgetList.size(); index++){
        Widget widget = widgetList.get(index);
        if (widget.getEvent(mouseX,mouseY) != 0)

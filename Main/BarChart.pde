@@ -46,7 +46,7 @@ class BarChart {
 
   BarChart(float[] freqArr) {
     barCol=color(#43FFBB);
-    barHoverCol=color(80, 200, 80);
+    barHoverCol=color(#FCB5C6);
     textBoxCol=color(250);
     drawTextBox=false;
     this.freqArr=freqArr;
@@ -190,12 +190,12 @@ class BarChart {
         if (drawTextBox==true && hoverBarChart==true && hoverBar==i) {
           fill (textBoxCol);
           stroke(230);
-          rect(mouseX, mouseY, -TEXTBOXX, -TEXTBOXY);
+          rect(mouseX, mouseY, -TEXTBOXX - 20, -TEXTBOXY);
           fill(0);
           textFont(axisFont);
           textSize(11);
-          text(xAxis, mouseX-TEXTBOXX+TEXTBOXGAP, mouseY-4*TEXTBOXGAP);
-          text(yAxisTitle+": "+yAxis, mouseX-TEXTBOXX+TEXTBOXGAP, mouseY-TEXTBOXGAP);
+          text(xAxis, mouseX-TEXTBOXX+TEXTBOXGAP , mouseY-4*TEXTBOXGAP);
+          text(yAxisTitle+": "+yAxis, mouseX-TEXTBOXX+TEXTBOXGAP - 10, mouseY-TEXTBOXGAP);
         }
       }
     }

@@ -1,8 +1,3 @@
-//import java.util.List;
-//import de.bezier.data.sql.*;
-//SQLite db; // Database connection
-
-
         /*
          * Convert a database flight record into a Flight object.
          */

@@ -51,7 +51,7 @@ class Histogram {
     colorList= new float[xCount][3];
     for(int i=0; i<colorList.length; i++){
       for (int j=0; j<3; j++){
-        colorList[i][j]=random(100, 255);
+        colorList[i][j]=random(251);
       }
     }
     barHoverCol=color(80, 200, 80);
@@ -61,7 +61,7 @@ class Histogram {
     perStr="Week";
     this.barTitles=barTitles;
 
-    axisFont=loadFont("AdelleSansDevanagari-Light-30.vlw");
+    axisFont=loadFont("ProcessingSans-Regular-30.vlw");
     tallestBar=freqArr[0];
     tallestIndex=0;
     barCount=freqArr.length;
@@ -87,17 +87,19 @@ class Histogram {
     barGapx=totalBar-barx;
   }
 
-  void barHover(float mx, float my) {
+  void barHover(float mx, float my) 
+  {
     if (drawHistogram == true) {
-      for (int i=0; i<barCount; i++) {
-        float temp = (i+1)/xCount;
+      for (int i = 0; i < barCount; i++) {
+        float temp = (i + 1)/ xCount;
         float temp2 = ceil(temp);
         barGapxCount=(int)temp2 +1;
-        if (mx > (CHARTGAPX + (barGapxCount * barGapx)+(i * barx)) && mx<(CHARTGAPX + (barGapxCount * barGapx) + ((i + 1) * barx))
-          && my > (CHARTGAPY + CHARTY - magArr[i]) && my < (CHARTGAPY + CHARTY)) {
-          hoverBar=i;
+        if (mx > (CHARTGAPX + (barGapxCount * barGapx) + (i * barx)) && mx < (CHARTGAPX + (barGapxCount * barGapx) + ((i + 1)*barx))
+          && my > (CHARTGAPY + CHARTY- magArr[i]) && my < (CHARTGAPY + CHARTY)) 
+        {
+          hoverBar = i;
           hoverHistogram = true;
-          hoverCount+=1;
+          hoverCount += 1;
         }
       }
       if (hoverCount>0 && hoverHistogram==true) {
@@ -110,13 +112,13 @@ class Histogram {
     }
   }
   void draw() {
-    background(0);
+    background(250);
     if (drawHistogram==true) {
       //x axis
-      stroke(255);
+      stroke(0);
       line(CHARTGAPX, CHARTGAPY+CHARTY, CHARTGAPX+CHARTX, CHARTGAPY+CHARTY);
       //y axis
-      stroke(255);
+      stroke(0);
       line(CHARTGAPX, CHARTGAPY, CHARTGAPX, CHARTGAPY+CHARTY);
 
       //title

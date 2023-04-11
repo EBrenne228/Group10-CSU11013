@@ -25,7 +25,7 @@ class Widget {
     fill(widgetColor);
     rect(x,y,width,height);
     fill(labelColor);
-    text(label, x + 10, y + height - 10);
+    text(label, x + 10, y + height - 15);
   }
   int getEvent(int mX, int mY)
   {
