@@ -1,0 +1,175 @@
+-- World Area Code table
+CREATE TABLE wac
+(
+    id           INTEGER PRIMARY KEY NOT NULL,
+    name         TEXT                NOT NULL,
+    country_name TEXT                NOT NULL
+);
+
+.import --csv --skip 1 world_area_codes.csv wac
+
+-- Temporary flight data table
+CREATE TABLE flights_stage1
+(
+    fl_date            DATE,
+    mkt_carrier        CHAR(2),
+    mkt_carrier_fl_num INT,
+    origin             CHAR(3),
+    origin_city_name   VARCHAR,
+    origin_state_abr   CHAR(2),
+    origin_wac         INTEGER,
+    dest               CHAR(3),
+    dest_city_name     VARCHAR,
+    dest_state_abr     CHAR(2),
+    dest_wac           INTEGER,
+    crs_dep_time       TIME,
+    dep_time           TIME,
+    crs_arr_time       TIME,
+    arr_time           TIME,
+    cancelled          INTEGER,
+    diverted           INTEGER,
+    distance           INTEGER
+);
+
+-- Load flights into a temporary table
+.import --csv --skip 1 flights_full.csv flights_stage1
+
+-- Turn departure and arrival times into actual TIME values
+UPDATE flights_stage1
+SET crs_dep_time = TIME(substr('0000' || crs_dep_time, -4, 2) || ':' || substr('0000' || crs_dep_time, -2) || ':00');
+UPDATE flights_stage1
+SET dep_time = TIME(substr('0000' || dep_time, -4, 2) || ':' || substr('0000' || dep_time, -2) || ':00');
+UPDATE flights_stage1
+SET crs_arr_time = TIME(substr('0000' || crs_arr_time, -4, 2) || ':' || substr('0000' || crs_arr_time, -2) || ':00');
+UPDATE flights_stage1
+SET arr_time = TIME(substr('0000' || arr_time, -4, 2) || ':' || substr('0000' || arr_time, -2) || ':00');
+
+-- Trim the ' 12:00:00 AM' off fl_date
+UPDATE flights_stage1
+SET fl_date = REPLACE(fl_date, ' 12:00:00 AM', '');
+
+-- Fix the format of fl_date so it's an actual DATE
+UPDATE flights_stage1
+SET fl_date = substr(fl_date, -4) || '-' ||
+              substr('0' || substr(fl_date, 1, instr(fl_date, '/') - 1), -2) || '-' ||
+              substr('0' || substr(fl_date, instr(fl_date, '/') + 1,
+                                   length(fl_date) - 5 - instr(fl_date, '/')), -2);
+
+-- Flight data table
+CREATE TABLE flights
+(
+    id                 INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    fl_date            DATE,
+    mkt_carrier        CHAR(2),
+    mkt_carrier_fl_num INT,
+    origin             CHAR(3),
+    origin_city_name   VARCHAR,
+    origin_state_abr   CHAR(2),
+    origin_wac         INTEGER,
+    dest               CHAR(3),
+    dest_city_name     VARCHAR,
+    dest_state_abr     CHAR(2),
+    dest_wac           INTEGER,
+    crs_dep_time       TIME,
+    dep_time           TIME,
+    crs_arr_time       TIME,
+    arr_time           TIME,
+    cancelled          INTEGER,
+    diverted           INTEGER,
+    distance           INTEGER,
+    crs_duration       TIME,
+    duration           TIME,
+    dep_delay          INTEGER,
+    arr_delay          INTEGER,
+    FOREIGN KEY(origin_wac) REFERENCES wac(id),
+    FOREIGN KEY(dest_wac) REFERENCES wac(id)
+);
+
+-- Copy data from flights_stage1 to flights table
+INSERT INTO flights (
+    fl_date,
+    mkt_carrier,
+    mkt_carrier_fl_num,
+    origin,
+    origin_city_name,
+    origin_state_abr,
+    origin_wac,
+    dest,
+    dest_city_name,
+    dest_state_abr,
+    dest_wac,
+    crs_dep_time,
+    dep_time,
+    crs_arr_time,
+    arr_time,
+    cancelled,
+    diverted,
+    distance
+)
+SELECT fl_date,
+       mkt_carrier,
+       mkt_carrier_fl_num,
+       origin,
+       origin_city_name,
+       origin_state_abr,
+       origin_wac,
+       dest,
+       dest_city_name,
+       dest_state_abr,
+       dest_wac,
+       crs_dep_time,
+       dep_time,
+       crs_arr_time,
+       arr_time,
+       cancelled,
+       diverted,
+       distance
+FROM flights_stage1;
+
+-- We don't need the flights_stage1 table anymore
+DROP TABLE flights_stage1;
+
+-- Cleanup the database to save space
+VACUUM;
+
+-- Calculate scheduled flight duration (ignore bad data where fight arrives before it departs!)
+UPDATE flights
+SET crs_duration = time((strftime('%s', crs_arr_time) - strftime('%s', crs_dep_time)), 'unixepoch')
+WHERE crs_arr_time > crs_dep_time;
+
+-- Calculate actual flight duration (ignore bad data where fight arrives before it departs!)
+UPDATE flights
+SET duration = time((strftime('%s', arr_time) - strftime('%s', dep_time)), 'unixepoch')
+WHERE arr_time > dep_time;
+
+-- Creating INDEXES for faster queres - Dhruv
+
+CREATE INDEX flights_origin_idx ON flights (origin);
+
+CREATE INDEX flights_destination_idx ON flights (dest);
+
+CREATE INDEX flights_fl_date_idx ON flights (fl_date);
+
+CREATE INDEX cancelled_idx ON flights (cancelled);
+
+CREATE INDEX diverted_idx ON flights (diverted);
+
+CREATE INDEX duration_idx ON flights (duration);
+
+CREATE INDEX origin_state_abr_idx ON flights (origin_state_abr);
+
+CREATE INDEX flights_dest_state_abr_idx ON flights (dest_state_abr);
+
+CREATE INDEX idx_flights_origin_dest ON flights (origin, dest);
+
+CREATE INDEX flights_origin_fl_date ON flights (origin, fl_date);
+
+CREAT INDEX idx_mkt_date ON flights (fl_date, mkt_carrier);
+
+CREATE INDEX idx_mkt_carrier ON flights(mkt_carrier);
+
+CREATE INDEX idx_cancelled_mkt_carrier ON flights (cancelled, mkt_carrier);
+
+
+
+
