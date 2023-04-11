@@ -15,7 +15,7 @@ final int AIRL_CHART_WEEK_2 = 11;
 final int AIRL_CHART_WEEK_3 = 12;
 final int AIRL_CHART_WEEK_4 = 13;
 final int AIRL_CHART_MONTH = 14;
-
+final int EVENT_GENERATE_PATH = 15;
 //defines the origin of where the USA map and individual states are drawn
 final int MAP_X = 0;  
 final int MAP_Y = 0;

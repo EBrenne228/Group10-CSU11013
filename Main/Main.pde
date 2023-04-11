@@ -45,13 +45,15 @@ String durationForPath = " ";
 String flightCodeForPath = " ";
 
 
+
 // Screens
 Screen homeScreen, chartScreen, heatMapScreen, pathScreen, currentScreen,arrivalsScreen,departuresScreen, airlinesChartsScreen, pathSelectionScreen;
 
 
 //widgets and buttons
 Widget chartScreenButton,chartScreenButton_2,mapScreenButton, homeScreenButton,homeScreenButton_2, heatMapButton, heatMapButton_2,
-heatMapButton_3, flightsButton, departuresButton, arrivalsButton, airlinesChartsScreenButton, pathSelectionScreenButton, pathsScreenButton;
+heatMapButton_3, flightsButton, departuresButton, arrivalsButton, airlinesChartsScreenButton, 
+pathSelectionScreenButton, pathsScreenButton, pathGenerateButton;
 
   // CP5 library GUI tools: Drop down lists and radio buttons
 ControlP5 CP5;
@@ -105,18 +107,18 @@ void setup(){
                                  .setPosition(1050,500);
                                  
   dateDDL = CP5.addDropdownList("Select DATE")   // DropDownList for date selection for path generator
-                                 .setPosition(300,300)
+                                 .setPosition(300,50)
                                  .setItemHeight(20)
                                  .setBarHeight(20)
                                  ;
                                  
   airlineDDL = CP5.addDropdownList("Select Airline")
-                  .setPosition(500, 300)
+                  .setPosition(450, 50)
                   .setItemHeight(20)
                   .setBarHeight(20)
                   ;
   flightDDL = CP5.addDropdownList("Select Flight")
-                  .setPosition(700, 300)
+                  .setPosition(600, 50)
                   .setItemHeight(20)
                   .setBarHeight(20)
                   .setWidth(240);
@@ -199,7 +201,8 @@ void setup(){
       
    heatMapButton_3 = new Widget(1000,200, 135, 50, "HeatMap", color(#18AD77), widgetFont, EVENT_TO_HEATMAPS);
      
-  
+    // path selecion buttons
+   pathGenerateButton = new Widget (800, 50, 100, 40, "Generate", color(#18AD77), widgetFont, EVENT_GENERATE_PATH);
  //defining screens
    
    homeScreen = new Screen(color(0), true, false, false,false,false);                // home screen
@@ -208,7 +211,7 @@ void setup(){
    arrivalsScreen = new Screen(color(255), false,false,false,true,false);            // heatmap screen to display flights to states
    departuresScreen = new Screen(color(255), false,false,false,false,true);          // heatmap screen to display flights from states
    airlinesChartsScreen = new Screen(color(255), false, false, false, false, false); // charts with airline statistics
-   pathSelectionScreen = new Screen(color(255), false, false, false, false, false);
+   pathSelectionScreen = new Screen(color(0), false, false, false, false, false);
    //pathScreen = new Screen (color(0), this);
    //pathScreen = new Screen (color(0), this);
    currentScreen = homeScreen;                                                       // setting current screen to home screen, only current screen is drawn
@@ -756,8 +759,8 @@ void controlEvent(ControlEvent theEvent)
     destForPath = db.getString ("dest");
     durationForPath = db.getString("duration");
     dateForPath = date;
-    String flightCode = airlineForPath + flightNumForPath;
-    println(flightCode, " : ", originForPath, " to ", destForPath, " on ", dateForPath, ", Duration of Flight: ", durationForPath);
+    flightCodeForPath = airlineForPath + flightNumForPath;
+    pathSelectionScreen.addWidget(pathGenerateButton);
   }
 
 
@@ -847,5 +850,9 @@ void mousePressed()
        destinationDDL.setVisible(false);
        weekRB.setVisible(false);
        break;
+       
+     case EVENT_GENERATE_PATH:
+        println(flightCodeForPath, " : ", originForPath, " to ", destForPath, " on ", dateForPath, ", Duration of Flight: ", durationForPath);
+        break;
   }
 }
