@@ -54,15 +54,14 @@ class Histogram {
         colorList[i][j]=random(251);
       }
     }
-    barHoverCol=color(80, 200, 80);
+    barHoverCol=color(255);
     textBoxCol=color(250);
     drawTextBox=false;
     this.freqArr=freqArr;
     perStr="Week";
     this.barTitles=barTitles;
 
-    axisFont=loadFont("ProcessingSans-Regular-30.vlw");
-    tallestBar=freqArr[0];
+    axisFont = tempFont;
     tallestIndex=0;
     barCount=freqArr.length;
     //set tallest bar
@@ -112,13 +111,13 @@ class Histogram {
     }
   }
   void draw() {
-    background(250);
+    background(0);
     if (drawHistogram==true) {
       //x axis
-      stroke(0);
+      stroke(255);
       line(CHARTGAPX, CHARTGAPY+CHARTY, CHARTGAPX+CHARTX, CHARTGAPY+CHARTY);
       //y axis
-      stroke(0);
+      stroke(255);
       line(CHARTGAPX, CHARTGAPY, CHARTGAPX, CHARTGAPY+CHARTY);
 
       //title
@@ -128,9 +127,11 @@ class Histogram {
       else if (flightDivert==true)
         chartTitle = "Diverted Flights";
       else if (flightCancel==true)
-        chartTitle = "Cancelled Flights";
+      {
+        chartTitle = "Cancelled Flights : Total Flights";
+      }
       else
-        chartTitle = "Flights";
+        chartTitle = "Largest Airlines by Number of Flights";
 
       //title post-flight info construct
       if (depAirport==true && depCity==true && depState==true && depWac==true)
@@ -152,20 +153,21 @@ class Histogram {
       if (airline==true)
         chartTitle+=" with the airline "+airline;
       //construct y-axis title
-      yAxisTitle=chartTitle;
+      yAxisTitle= "Flights";
       //sortation of data
       if (byFilter==true) {
         xAxisTitle=byStr;
         chartTitle+=" by "+byStr;
-      } else if (perFilter==true) {
+      } else if 
+      (perFilter==true) {
         chartTitle+=" per "+perStr;
         xAxisTitle=perStr;
       }
 
-      fill(0);
+      fill(255);
       textFont(axisFont);
       textSize(22);
-      text(chartTitle, CHARTGAPX+CHARTX/2, CHARTGAPY);
+      text(chartTitle, CHARTGAPX+CHARTX/3, CHARTGAPY);
       textFont(axisFont);
       textSize(20);
       text(yAxisTitle, CHARTGAPX/3, CHARTGAPY+CHARTY/2);
@@ -177,7 +179,24 @@ class Histogram {
         String yAxis=""+temp;
         float temp4 = (i)/xCount;
         int unitCount = (int)floor(temp4) +1;
-        String xAxis=xAxisTitle+" "+unitCount;
+        String xAxis;
+        if (flightCancel==true&&unitCount==1)
+          xAxis="Cancelled Flights";
+        else if (flightCancel==true&&unitCount==2)
+          xAxis="Total";
+        else 
+          xAxis=xAxisTitle+unitCount;
+          
+          if (flightDivert==true&&unitCount==1)
+          {
+            xAxis="Airlines";
+          }
+          
+          if (largestAirlinesFilter == true && unitCount == 1)
+          {
+            xAxis = "Airlines";
+          }
+          
         color currBarCol;
 
         float temp2 = i/xCount;
@@ -191,7 +210,7 @@ class Histogram {
         }
         //individual bar
         fill (currBarCol);
-        int strokeCol=(hoverHistogram==true?(hoverBar==i?0:120):0);
+        int strokeCol=(hoverHistogram==true?(hoverBar==i?255:120):255);
         stroke(strokeCol);
         rect(CHARTGAPX+(barGapxCount*barGapx)+(i*barx), CHARTGAPY+CHARTY-magArr[i], barx, magArr[i]);
         //x-axis bars
@@ -202,21 +221,21 @@ class Histogram {
           else if ((i+1)%xCount==0)
             currBarTitle=barTitles[xCount-1];
         }
-        fill(0);
+        fill(255);
         textFont(axisFont);
-        textSize(13);
+        textSize(11);
         text(currBarTitle, CHARTGAPX+(barGapxCount*barGapx)+(i*barx), CHARTGAPY+CHARTY+INDENT*2);
         //y-axis
         fill(currBarCol);
         textFont(axisFont);
-        textSize(13);
-        text(yAxis, TEXTGAP, CHARTGAPY+CHARTY-magArr[i]);
+        textSize(11);
+        text(yAxis, TEXTGAP - 25, CHARTGAPY+CHARTY-magArr[i] + 2);
         line(CHARTGAPX-INDENT, CHARTGAPY+CHARTY-magArr[i], CHARTGAPX, CHARTGAPY+CHARTY-magArr[i]);
         //x-axis title
         if ((i+1)%xCount==0 ) {
-          fill(0);
+          fill(255);
           textFont(axisFont);
-          textSize(15);
+          textSize(13);
           float textLength = textWidth(xAxis);
           text(xAxis, CHARTGAPX+(barGapxCount*barGapx)+(i*barx)-(barx*0.5)-textLength, CHARTGAPY+CHARTY+INDENT*4);
         }
@@ -228,7 +247,7 @@ class Histogram {
           rect(mouseX, mouseY, -TEXTBOXX, -TEXTBOXY);
           fill(0);
           textFont(axisFont);
-          textSize(11);
+          textSize(9);
           text(xAxis, mouseX-TEXTBOXX+TEXTBOXGAP, mouseY-4*TEXTBOXGAP);
           text(yAxisTitle+": "+yAxis, mouseX-TEXTBOXX+TEXTBOXGAP, mouseY-TEXTBOXGAP);
         }

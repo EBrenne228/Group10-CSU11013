@@ -12,13 +12,13 @@ class Screen {
   
   
   //attributes that define the type of screen it is
-  boolean isLoading,isHeatMap, isBarChart, isarrivals, isdepartures;
+  boolean isLoading,isHeatMap, isBarChart, isarrivals, isdepartures, isPathing;
   boolean drawUi = false;
   
   
   
   
-  Screen (color backgroundColour, boolean loading, boolean heatMap, boolean barChart, boolean arrivals, boolean departures )
+  Screen (color backgroundColour, boolean loading, boolean heatMap, boolean barChart, boolean arrivals, boolean departures, boolean pathing )
   {
     this.backgroundColour = backgroundColour;
     //this.widgetList = theButtons;
@@ -27,6 +27,7 @@ class Screen {
     isBarChart = barChart;
     this.isarrivals = arrivals;
     this.isdepartures = departures;
+    isPathing = pathing;
     
     if (isBarChart)
     {
@@ -51,6 +52,8 @@ class Screen {
     
     if (drawUi) 
     {    
+      
+      
       for (Widget widget: widgetList)
       {
         widget.draw();
@@ -113,6 +116,19 @@ class Screen {
      }
    }
    
+   
+   else if(isPathing){
+     background(0);
+     
+     pathing.draw(flightsFromStates); //takes any data doesnt actually use it as pathing is blank
+     pathing.stateNames();
+           for (Widget widget: widgetList)
+      {
+        widget.draw();
+      }
+     
+     
+   }
    else {
      background(backgroundColour);
      for (Widget widget: widgetList)

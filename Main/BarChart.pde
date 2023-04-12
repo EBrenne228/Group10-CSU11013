@@ -45,14 +45,14 @@ class BarChart {
 
 
   BarChart(float[] freqArr) {
-    barCol=color(#43FFBB);
-    barHoverCol=color(#FCB5C6);
+    barCol=color(255);
+    barHoverCol=color(#5495CB);
     textBoxCol=color(250);
     drawTextBox=false;
     this.freqArr=freqArr;
     perStr="Week";
 
-    axisFont= glacial;
+    axisFont= tempFont;
     tallestBar=freqArr[0];
     tallestIndex=0;
     barCount=freqArr.length;
@@ -139,7 +139,7 @@ class BarChart {
       if (airline==true)
         chartTitle+=" with the airline "+airline;
       //construct y-axis title
-      yAxisTitle=chartTitle;
+      yAxisTitle = "Flights";
       //sortation of data
       if (byFilter==true) {
         xAxisTitle=byStr;
@@ -155,7 +155,7 @@ class BarChart {
       text(chartTitle, CHARTGAPX+CHARTX/2, CHARTGAPY);
       textFont(axisFont);
       textSize(20);
-      text(yAxisTitle, CHARTGAPX/3 - 55, CHARTGAPY+CHARTY/2);
+      text(yAxisTitle, CHARTGAPX/3 - 30, CHARTGAPY+CHARTY/2);
 
 
       for (int i=0; i<magArr.length; i++) {
@@ -190,12 +190,12 @@ class BarChart {
         if (drawTextBox==true && hoverBarChart==true && hoverBar==i) {
           fill (textBoxCol);
           stroke(230);
-          rect(mouseX, mouseY, -TEXTBOXX - 20, -TEXTBOXY);
+          rect(mouseX, mouseY, -TEXTBOXX - 10, -TEXTBOXY);
           fill(0);
           textFont(axisFont);
-          textSize(11);
+          textSize(10);
           text(xAxis, mouseX-TEXTBOXX+TEXTBOXGAP , mouseY-4*TEXTBOXGAP);
-          text(yAxisTitle+": "+yAxis, mouseX-TEXTBOXX+TEXTBOXGAP - 10, mouseY-TEXTBOXGAP);
+          text(yAxisTitle+": "+yAxis, mouseX-TEXTBOXX+TEXTBOXGAP, mouseY-TEXTBOXGAP);
         }
       }
     }

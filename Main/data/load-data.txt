@@ -160,15 +160,17 @@ CREATE INDEX origin_state_abr_idx ON flights (origin_state_abr);
 
 CREATE INDEX flights_dest_state_abr_idx ON flights (dest_state_abr);
 
-CREATE INDEX idx_flights_origin_dest ON flights (origin, dest);
+CREATE INDEX idx_flights_origin_dest ON flights (dest, origin);
 
-CREATE INDEX flights_origin_fl_date ON flights (origin, fl_date);
+CREATE INDEX flights_origin_fl_date ON flights (fl_date, origin);
 
-CREAT INDEX idx_mkt_date ON flights (fl_date, mkt_carrier);
+CREATE INDEX idx_mkt_date ON flights (fl_date, mkt_carrier);
 
 CREATE INDEX idx_mkt_carrier ON flights(mkt_carrier);
 
 CREATE INDEX idx_cancelled_mkt_carrier ON flights (cancelled, mkt_carrier);
+
+CREATE INDEX idx_cancelled_flight_code ON flights (fl_date, mkt_carrier, mkt_carrier_fl_num);
 
 
 
