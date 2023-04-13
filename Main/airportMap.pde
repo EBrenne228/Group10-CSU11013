@@ -2,7 +2,10 @@
    * void mapAirports()
    *
    * recording coodinates of airports for generating flight paths
-   *
+   * using HashMap 'airportMap', uses a String as the key. the Value is an Airport object
+   * HashMap Populated in setup in initialQuery(), name of the Airport being used as the key.
+   * 
+   *  - Dhruv
    */
 
 void mapAirports()
@@ -513,4 +516,209 @@ void mapAirports()
   
   airportMap.get("HYS").xPos = 468;
   airportMap.get("HYS").yPos = 282;
+  
+  airportMap.get("IAD").xPos = 811;
+  airportMap.get("IAD").yPos = 261;
+  
+  airportMap.get("IAG").xPos = 777;
+  airportMap.get("IAG").yPos = 165;
+  
+  airportMap.get("IAH").xPos = 532;
+  airportMap.get("IAH").yPos = 447;
+  
+  airportMap.get("ICT").xPos = 512;
+  airportMap.get("ICT").yPos = 298;
+  
+  airportMap.get("IDA").xPos = 248;
+  airportMap.get("IDA").yPos = 147;
+  
+  airportMap.get("ILG").xPos = 841;
+  airportMap.get("ILG").yPos = 235;
+  
+  airportMap.get("ILM").xPos = 823;
+  airportMap.get("ILM").yPos = 345;
+  
+  airportMap.get("IMT").xPos = 629;
+  airportMap.get("IMT").yPos = 135;
+  
+  airportMap.get("IND").xPos = 658;
+  airportMap.get("IND").yPos = 245;
+  
+  airportMap.get("INL").xPos = 525;
+  airportMap.get("INL").yPos = 69;
+  
+  airportMap.get("ISP").xPos = 869;
+  airportMap.get("ISP").yPos = 194;
+  
+  airportMap.get("ITH").xPos = 830;
+  airportMap.get("ITH").yPos = 173;
+  
+  airportMap.get("ITO").xPos = 115;
+  airportMap.get("ITO").yPos = 514;
+  
+  airportMap.get("JAC").xPos = 285;
+  airportMap.get("JAC").yPos = 167;
+  
+  airportMap.get("JAN").xPos = 614;
+  airportMap.get("JAN").yPos = 418;
+  
+  airportMap.get("JAX").xPos = 772;
+  airportMap.get("JAX").yPos = 442;
+  
+  airportMap.get("JLN").xPos = 536;
+  airportMap.get("JLN").yPos = 319;
+  
+  airportMap.get("JMS").xPos = 467;
+  airportMap.get("JMS").yPos = 117;
+  
+  airportMap.get("JNU").xPos = 348;
+  airportMap.get("JNU").yPos = 601;
+  
+  airportMap.get("JST").xPos = 797;
+  airportMap.get("JST").yPos = 221;
+  
+  airportMap.get("KOA").xPos = 103;
+  airportMap.get("KOA").yPos = 519;
+  
+  airportMap.get("KTN").xPos = 351;
+  airportMap.get("KTN").yPos = 607;
+  
+  airportMap.get("LAN").xPos = 686;
+  airportMap.get("LAN").yPos = 183;
+  
+  airportMap.get("LAR").xPos = 349;
+  airportMap.get("LAR").yPos = 210;
+  
+  airportMap.get("LAS").xPos = 194;
+  airportMap.get("LAS").yPos = 290;
+  
+  airportMap.get("LAW").xPos = 476;
+  airportMap.get("LAW").yPos = 371;
+  
+  airportMap.get("LBB").xPos = 412;
+  airportMap.get("LBB").yPos = 380;
+  
+  airportMap.get("LBE").xPos = 772;
+  airportMap.get("LBE").yPos = 224;
+  
+  airportMap.get("LBF").xPos = 440;
+  airportMap.get("LBF").yPos = 226;
+  
+  airportMap.get("LBL").xPos = 420;
+  airportMap.get("LBL").yPos = 308;
+  
+  airportMap.get("LCH").xPos = 565;
+  airportMap.get("LCH").yPos = 457;
+  
+  airportMap.get("LCK").xPos = 715;
+  airportMap.get("LCK").yPos = 245;
+  
+  airportMap.get("LEX").xPos = 677;
+  airportMap.get("LEX").yPos = 304;
+  
+  airportMap.get("LFT").xPos = 591;
+  airportMap.get("LFT").yPos = 465;
+  
+  airportMap.get("LGA").xPos = 860;
+  airportMap.get("LGA").yPos = 191;
+  
+  airportMap.get("LGB").xPos = 92;
+  airportMap.get("LGB").yPos = 266;
+  
+  airportMap.get("LIH").xPos = 62;
+  airportMap.get("LIH").yPos = 478;
+  
+  airportMap.get("LIT").xPos = 567;
+  airportMap.get("LIT").yPos = 367;
+  
+  airportMap.get("LNK").xPos = 488;
+  airportMap.get("LNK").yPos = 239;
+  
+  airportMap.get("LRD").xPos = 456;
+  airportMap.get("LRD").yPos = 513;
+  
+  airportMap.get("LSE").xPos = 574;
+  airportMap.get("LSE").yPos = 166;
+  
+  airportMap.get("LWB").xPos = 465;
+  airportMap.get("LWB").yPos = 202;
+  
+  airportMap.get("LWS").xPos = 224;
+  airportMap.get("LWS").yPos = 100;
+  
+  airportMap.get("LYH").xPos = 780;
+  airportMap.get("LYH").yPos = 291;
+  
+  airportMap.get("MAF").xPos = 396;
+  airportMap.get("MAF").yPos = 412;
+  
+  airportMap.get("MBS").xPos = 684;
+  airportMap.get("MBS").yPos = 167;
+  
+  airportMap.get("MCI").xPos = 424;
+  airportMap.get("MCI").yPos = 275;
+  
+  airportMap.get("MCO").xPos = 784;
+  airportMap.get("MCO").yPos = 481;
+  
+  airportMap.get("MCW").xPos = 526;
+  airportMap.get("MCW").yPos = 189;
+  
+  airportMap.get("MDT").xPos = 816;
+  airportMap.get("MDT").yPos = 214;
+  
+  airportMap.get("MDW").xPos = 636;
+  airportMap.get("MDW").yPos = 214;
+  
+  airportMap.get("MEI").xPos = 645;
+  airportMap.get("MEI").yPos = 402;
+  
+  airportMap.get("MEM").xPos = 627;
+  airportMap.get("MEM").yPos = 343;
+  
+  airportMap.get("MFE").xPos = 469;
+  airportMap.get("MFE").yPos = 546;
+  
+  airportMap.get("MFR").xPos = 110;
+  airportMap.get("MFR").yPos = 153;
+
+  airportMap.get("MGM").xPos = 675;
+  airportMap.get("MGM").yPos = 406;
+  
+  airportMap.get("MHK").xPos = 503;
+  airportMap.get("MHK").yPos = 272;
+  
+  airportMap.get("MHT").xPos = 884;
+  airportMap.get("MHT").yPos = 142;
+  
+  airportMap.get("MIA").xPos = 808;
+  airportMap.get("MIA").yPos = 535;
+  
+  airportMap.get("MKE").xPos = 634;
+  airportMap.get("MKE").yPos = 193;
+  
+  airportMap.get("MKG").xPos = 665;
+  airportMap.get("MKG").yPos = 185;
+  
+  airportMap.get("MLB").xPos = 798;
+  airportMap.get("MLB").yPos = 491;
+  
+  airportMap.get("MLI").xPos = 601;
+  airportMap.get("MLI").yPos = 229;
+  
+  airportMap.get("MLU").xPos = 582;
+  airportMap.get("MLU").yPos = 417;
+  
+  airportMap.get("MOB").xPos = 661;
+  airportMap.get("MOB").yPos = 448;
+  
+  airportMap.get("MQT").xPos = 641;
+  airportMap.get("MQT").yPos = 120;
+   
+  airportMap.get("MRY").xPos = 87;
+  airportMap.get("MRY").yPos = 280;
+  
+  airportMap.get("MSN").xPos = 612;
+  airportMap.get("MSN").yPos = 186;
+  
 }

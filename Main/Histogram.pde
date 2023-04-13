@@ -181,7 +181,7 @@ class Histogram {
         int unitCount = (int)floor(temp4) +1;
         String xAxis;
         if (flightCancel==true&&unitCount==1)
-          xAxis="Cancelled Flights";
+          xAxis="Cancelled";
         else if (flightCancel==true&&unitCount==2)
           xAxis="Total";
         else 

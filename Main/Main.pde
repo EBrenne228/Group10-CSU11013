@@ -102,6 +102,8 @@ void setup(){
   nonLoopingGif.ignoreRepeat();
   
   
+  
+  // Set up of ControlP5 UI features
   CP5 = new ControlP5(this);
   
   
@@ -144,7 +146,7 @@ void setup(){
                     .addItem("Flights From Airport",1)
                     .addItem("Flights TO Airport",2)
                     ;
-                    //.addItem("Cancelled Flights by Airlines", 3)
+                  
    weekRB = CP5.addRadioButton("radioButtonWeek")
                .setPosition(1050, 100)
                .setSize(60, 30)
@@ -173,7 +175,7 @@ void setup(){
                         .addItem("Top 10 Airlines to Divert", 3)
                         ;
                
-   // setting visibility of UI for loading and homepage
+   // setting visibility of UI for loading and homepage - Dhruv
    dropDownList.setVisible(false);
    destinationDDL.setVisible(false);
    dateDDL.setVisible(false);
@@ -183,8 +185,7 @@ void setup(){
    airlineChartsRB.setVisible(false);
    
    
-                    
-                    
+                                        
   stateList = new ArrayList<State>();
   cancelledByAirlines = new float[10];
   divertedByAirlines = new float [10];
@@ -294,14 +295,14 @@ void setup(){
       println("Problem opening database");
   }
   
-  // arrays for plugging into charts, initialising to avoid nullPointerExceptions
+  // arrays for plugging into charts, initialising to avoid nullPointerExceptions - Dhruv
   flightsFromOriginweekly = new float[4];
   flightsFromOriginDaily = new float[7];
   flightsToDestWeekly = new float[4];   
   flightsToDestDaily = new float[7];
   largestAirlines = new float[10];
   
-  thread("initialQuery"); // runs inital queries/loading of data on a separate thread from the "Animation" thread.
+  thread("initialQuery"); // runs inital queries/loading of data on a separate thread from the "Animation" thread. - Dhruv
   
   
  //setting up heatmap 
@@ -402,20 +403,21 @@ void loadFonts()  // loading in fonts, called in setup
    *  queries for charts and heatmap being loaded in when the program is run, called in setup
    *  this method runs on a different thread than the "animation thread" allowing us to play a loading screen while the queries go through
    *  - Dhruv
+   *
    */
     
 void initialQuery()   
 {
      try {
-     db.query("SELECT origin FROM flights GROUP BY origin");
+     db.query("SELECT origin FROM flights GROUP BY origin");  // gets all 369 airports
      String tempAirp;
      while (db.next())
       {
         tempAirp = db.getString("origin");
         airportList.add(new Airport(tempAirp));
-        dropDownList.addItem(tempAirp, 1);
+        dropDownList.addItem(tempAirp, 1);                
         destinationDDL.addItem(tempAirp, 1);
-        airportMap.put(tempAirp, new Airport(tempAirp));
+        airportMap.put(tempAirp, new Airport(tempAirp));    // HashMap for flight Path Generator
       }
       mapAirports();
       println("done1");
@@ -423,7 +425,6 @@ void initialQuery()
      db.query("SELECT mkt_carrier FROM flights GROUP BY mkt_carrier ");
      while (db.next())
      {
-       //airlinesDDL.addItem(db.getString("mkt_carrier"),1);
        airlineList.add(db.getString("mkt_carrier"));
      }
      println("done2");
@@ -432,13 +433,15 @@ void initialQuery()
       //heatMap queries
 
       State tempState;
-      db.query("Select origin_state_abr FROM flights GROUP BY origin_state_abr");
+      db.query("Select origin_state_abr FROM flights GROUP BY origin_state_abr");  // gets all states
       while (db.next())
       {
         tempState = new State(db.getString("origin_state_abr"));
         stateList.add(tempState);
       }
       println("done3");
+      
+      // 53 states being added for some reason, removing the 3 that are not supposed to be there
       stateList.remove(38);
       stateList.remove(43);
       stateList.remove(47);
@@ -450,6 +453,8 @@ void initialQuery()
       }
       println("done4");
       
+      
+      // top 5 airlines to Cancel Flights
       int index1 = 0;
       db.query("SELECT mkt_carrier, COUNT(*) AS count " + "FROM flights "+ "WHERE cancelled = 1 " +  "GROUP BY mkt_carrier "+ "ORDER BY count DESC" + " LIMIT 5");
       while (db.next())
@@ -460,7 +465,7 @@ void initialQuery()
       }
       println("done5");
       
-      
+     
       for (int index2 = 0; index2 < 5; index2++)
       {
         String tempAirl = topAirlinesToCancel[index2];
@@ -469,6 +474,7 @@ void initialQuery()
         index1++;
       }
       
+      // top 10 airlines to divert flights
       index1 = 0;
       db.query("SELECT mkt_carrier, COUNT(*) AS count " + "FROM flights "+ "WHERE diverted = 1 " +  "GROUP BY mkt_carrier "+ "ORDER BY count DESC" + " LIMIT 10");
       while (db.next())
@@ -479,7 +485,7 @@ void initialQuery()
       }
       println("done6");
       
-      
+      // creating  arrayList and dropDownList for Flight Path Generator
       String tempDate;
       db.query("SELECT fl_date FROM flights GROUP BY fl_date");
       while (db.next())
@@ -490,6 +496,7 @@ void initialQuery()
       }
       println("done7");
       
+      // 10 Largest Carriers by number of flights
       index1 = 0;
       db.query("SELECT mkt_carrier, COUNT(*) AS count " + "FROM flights " +  "GROUP BY mkt_carrier "+ "ORDER BY count DESC" + " LIMIT 10");
       while (db.next())
@@ -511,10 +518,10 @@ void initialQuery()
      }
 }
 
-
+ 
 void draw()
 {
-  currentScreen.draw();
+  currentScreen.draw();   // points to a different screen as user interacts, starts at homescreen
  
   if (currentScreen != chartScreen)
   {
@@ -547,6 +554,8 @@ void controlEvent(ControlEvent theEvent)
      // to avoid an error message thrown by controlP5.
      println(theEvent.getValue());
   }
+  
+  // everytime radioButton is clicked it returns an integer corresponding to each item.
   if(theEvent.isFrom(radioButton)) {
     
     println("\t "+theEvent.getValue());
@@ -665,7 +674,7 @@ void controlEvent(ControlEvent theEvent)
   
   else if (theEvent.isController() && theEvent.isFrom(dropDownList)) {
   
-      origin = airportList.get((int)theEvent.getController().getValue()).name;
+      origin = airportList.get((int)theEvent.getController().getValue()).name;  // the arrayList and dropDownList have items in the same order
       largestAirlinesFilter = false;
       switch (airlineChart)
       {
@@ -801,22 +810,139 @@ void controlEvent(ControlEvent theEvent)
 
   else if (theEvent.isController() && theEvent.isFrom(destinationDDL)){
     destination = airportList.get((int)theEvent.getController().getValue()).name;
-    db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date BETWEEN '2022-01-01' AND '2022-01-07'", destination);
-    flightsToDestWeekly[0] = db.getInt("total");
-    
-    db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date BETWEEN '2022-01-08' AND '2022-01-14'", destination);
-    flightsToDestWeekly[1] = db.getInt("total");
-    
-    db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date BETWEEN '2022-01-15' AND '2022-01-21' ", destination);
-    flightsToDestWeekly[2] = db.getInt("total");
-  
-    db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date BETWEEN '2022-01-22' AND '2022-01-31'  ", destination);
-    flightsToDestWeekly[3]= db.getInt("total"); 
+       largestAirlinesFilter = false;
+      switch (airlineChart)
+      {
+        case AIRL_CHART_WEEK_1:
+         db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date  = '2022-01-01' ", destination);
+          flightsToDestDaily[0] = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-02' ", destination);
+          flightsToDestDaily[1] = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-03' ", destination);
+           flightsToDestDaily[2] = db.getInt("total");
         
-    chartScreen.bc = new BarChart(flightsToDestWeekly);
-    chartScreen.bc.arrLoc = destination;
-    chartScreen.bc.perStr = "week";
-    println("event from controller : " + theEvent.getController().getValue() + " from " + theEvent.getController());
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-04' ", destination);
+           flightsToDestDaily[3] = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-05'", destination);
+          flightsToDestDaily[4] = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-06' ", destination);
+          flightsToDestDaily[5] = db.getInt("total");
+        
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-07' ", destination);
+          flightsToDestDaily[6] = db.getInt("total");
+          
+          chartScreen.bc = new BarChart(flightsToDestDaily);
+          chartScreen.bc.arrLoc = destination;
+          chartScreen.bc.perStr = "Day";
+          break;
+          
+          case AIRL_CHART_WEEK_2:
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date  = '2022-01-08' ", destination);
+          flightsToDestDaily[0] = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-09' ", destination);
+          flightsToDestDaily[1] = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-10' ", destination);
+          flightsToDestDaily[2] = db.getInt("total");
+        
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-11' ", destination);
+          flightsToDestDaily[3]= db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-12'", destination);
+          flightsToDestDaily[4] = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-13' ", destination);
+          flightsToDestDaily[5] = db.getInt("total");
+        
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-14' ", destination);
+          flightsToDestDaily[6]= db.getInt("total");
+          
+          
+          chartScreen.bc = new BarChart(flightsToDestDaily);
+          chartScreen.bc.arrLoc = destination;
+          chartScreen.bc.perStr = "Day";
+          break;
+          
+         case AIRL_CHART_WEEK_3:
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date  = '2022-01-15' ", destination);
+          flightsToDestDaily[0] = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-16' ", destination);
+          flightsToDestDaily[1] = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-17' ", destination);
+          flightsToDestDaily[2] = db.getInt("total");
+        
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-18' ", destination);
+          flightsToDestDaily[3]= db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-19'", destination);
+          flightsToDestDaily[4] = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-20' ", destination);
+          flightsToDestDaily[5] = db.getInt("total");
+        
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-21' ", destination);
+          flightsToDestDaily[6]= db.getInt("total");
+          
+          chartScreen.bc = new BarChart(flightsToDestDaily);
+          chartScreen.bc.arrLoc = destination;
+          chartScreen.bc.perStr = "Day";
+          break;
+          
+         case AIRL_CHART_WEEK_4:
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date  = '2022-01-22' ", destination);
+          flightsToDestDaily[0] = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-23' ", destination);
+          flightsToDestDaily[1] = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-24' ", destination);
+          flightsToDestDaily[2] = db.getInt("total");
+        
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-25' ", destination);
+          flightsToDestDaily[3]= db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-26'", destination);
+          flightsToDestDaily[4] = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-27' ", destination);
+          flightsToDestDaily[5] = db.getInt("total");
+        
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date = '2022-01-28' ", destination);
+          flightsToDestDaily[6]= db.getInt("total");
+          
+          chartScreen.bc = new BarChart(flightsToDestDaily);
+          chartScreen.bc.arrLoc = destination;
+          chartScreen.bc.perStr = "Day";
+          break;
+          
+        case AIRL_CHART_MONTH:
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date BETWEEN '2022-01-01' AND '2022-01-07'", destination);
+          flightsToDestWeekly[0] = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date BETWEEN '2022-01-08' AND '2022-01-14'", destination);
+          flightsToDestWeekly[1] = db.getInt("total");
+          
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date BETWEEN '2022-01-15' AND '2022-01-21' ", destination);
+          flightsToDestWeekly[2] = db.getInt("total");
+        
+          db.query("SELECT COUNT(*) AS total FROM flights WHERE dest = '%s' AND fl_date BETWEEN '2022-01-22' AND '2022-01-31'  ", destination);
+          flightsToDestWeekly[3]= db.getInt("total");
+     
+          
+         chartScreen.bc = new BarChart(flightsToDestWeekly);
+         chartScreen.bc.arrLoc = destination;
+         chartScreen.bc.perStr = "week";
+         println("event from controller : " + theEvent.getController().getValue() + " from " + theEvent.getController());
+    
+      }
+    
     
   }
   
@@ -867,9 +993,6 @@ void controlEvent(ControlEvent theEvent)
     pathSelectionScreen.addWidget(pathGenerateButton);
     println("event from controller : " + theEvent.getController().getValue() + " from " + theEvent.getController());
   }
-  
-   
-
 }
 
   /*
@@ -938,8 +1061,6 @@ void mousePressed()
        airlineChartsRB.setVisible(false);
        drawHistogram = false;
        break;
-       //usa.setColourPalette(#FFFFCC, #A1DAB4, #41B6C4, #2C7FB8, #253494,#0d1442);
-       //currentScreen = heatMapScreen;
        
      case DEPARTURES:
        currentScreen = departuresScreen;
@@ -948,9 +1069,6 @@ void mousePressed()
        flightDDL.setVisible(false);
        airlineChartsRB.setVisible(false);
        drawHistogram = false;
-       //usa.current = "Departures per state";
-       //usa.setColourPalette(#FFFFCC, #A1DAB4, #41B6C4, #2C7FB8, #253494,#0d1442);
-       //currentScreen = heatMapScreen;
        break;
        
      case EVENT_TO_AIRLINES_CHARTS:
@@ -981,5 +1099,7 @@ void mousePressed()
       pathing.doPath = true;
         pathing.getPath(originForPath, Ox,Oy, destForPath,Dx, Dy,dateForPath, flightCodeForPath,durationForPath, originCityForPath, destCityForPath);
         break;
+      case EVENT_NULL:
+        println(mouseX, mouseY);
   }
 }

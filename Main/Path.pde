@@ -1,3 +1,4 @@
+// Added Path Class - Dhruv 
 class Path {
   float startX;
   float startY;
@@ -5,7 +6,7 @@ class Path {
   float endY;
   float currentX;
   float currentY;
-  float t;
+  float interpolate;
   float increment;
 
   Path(float startX, float startY, float endX, float endY) {
@@ -15,7 +16,7 @@ class Path {
     this.endY = endY;
     currentX = startX; // initialize currentX and currentY here
     currentY = startY;
-    t = 0.0;
+    interpolate = 0.0;
     increment = 0.003; // used to change the speed of animation (positive relationship), cannot be greater than 1 for lerp()
   }
 
@@ -41,11 +42,10 @@ class Path {
   */
   void move()
   {
-    if (t < 1.0) {
-    currentX = lerp(startX, endX, t);
-    currentY = lerp(startY, endY, t);
-    t += increment;
-    println(t);
+    if (interpolate < 1.0) {
+    currentX = lerp(startX, endX, interpolate);
+    currentY = lerp(startY, endY, interpolate);
+    interpolate += increment;
   }
 }
 }

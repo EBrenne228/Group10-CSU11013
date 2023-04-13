@@ -269,6 +269,17 @@ public int heatMapColors(int dataPoint){
     stroke(0);
   }
   
+  /*
+   * void getPath
+   *
+   * Parameters: flight origin and destination airports, their X and Y coordinates
+   * Generates a Flight path through interpolation using the 'move()' method from the Path Class
+   * 
+   * Parameters: flight origin and destination airports, their cities and states, flight code, flight date and flight duration
+   * Prints these out on the Screen.
+   * 
+   * - Dhruv
+   */
   
   void getPath( String origin, float Ox, float Oy, String dest, float Dx, float Dy, String date, String flightCode, String duration, 
                String originCity, String destCity){
