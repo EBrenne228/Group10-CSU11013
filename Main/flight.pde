@@ -1,4 +1,8 @@
-class Flight {
+/*
+ *Flight Class by James
+ */
+ 
+public class Flight {
   String date;
   String carrierCode;
   int flightNumber;

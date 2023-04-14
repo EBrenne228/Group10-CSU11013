@@ -1,3 +1,12 @@
+ /*
+   *
+   * Histogram Class Created by Conor
+   * Scales to different queries
+   * Dynamic titles and labelling
+   *
+   */
+
+
 public class PiChart {
   final int RADIUS=275;
   final int PIX = 600;

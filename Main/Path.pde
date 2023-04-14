@@ -1,5 +1,10 @@
-// Added Path Class - Dhruv 
-class Path {
+/*
+ *
+ * Path Class by Dhruv
+ * Functionality for flight path generator tool, integrated into Ellen's America Class
+ *
+ */
+public class Path {
   float startX;
   float startY;
   float endX;

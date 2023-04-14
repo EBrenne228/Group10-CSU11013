@@ -1,4 +1,14 @@
-class Histogram {
+  /*
+   *
+   * Histogram Class Created by Conor
+   * Scales to different queries
+   * Dynamic titles and labelling
+   * Hover over bars to show individual data
+   *
+   */
+
+
+public class Histogram {
   final int MAXBAR=580;
   final int CHARTGAPX=180;
   final int CHARTGAPY=50;

@@ -1,6 +1,9 @@
-//I added a widget class-Ellen
-// Adjudted text size to fit Widgets - Dhruv
-class Widget {
+/*
+ * Widget Class by Ellen
+ * Used for navigation around the application
+ */ 
+
+public class Widget {
   int x, y, width, height;
   String label; 
   int event;
@@ -26,6 +29,7 @@ class Widget {
     stroke(outline);
     fill(widgetColor);
     rect(x,y,width,height,8);
+    // Adjudted text size to fit Widgets - Dhruv
     if (width == 150)
     {
       textSize(14);

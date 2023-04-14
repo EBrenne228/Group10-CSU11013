@@ -1,6 +1,8 @@
-//Added Screen Class - Dhruv
-
-class Screen {
+ /*
+  * Screen Class by Dhruv and Ellen
+  *
+  */
+public class Screen {
   color backgroundColour;
   ArrayList <Widget> widgetList; // Defined arrayList of Widgets in Screen Class and added methods related to adding, drawing and clicking widgets - Dhruv
   BarChart bc;
@@ -61,12 +63,7 @@ class Screen {
     }
   }
   
-//else   {      background(backgroundColour);
-//    for (Widget widget: widgetList)
-//    {
-//      widget.draw();
-//    }
-//}
+   
     else if (isHeatMap){
        usa.draw(flightsPerState);
        usa.rangePalette();

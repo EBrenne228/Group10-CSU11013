@@ -1,3 +1,13 @@
+/*
+ * Amercia Class by Ellen
+ * Originally for HeatMap functionality 
+ * Added flight path generation
+ * 
+ */
+
+
+
+
 public class America {
 
   //class for the USA map
@@ -78,10 +88,12 @@ public int heatMapColors(int dataPoint){
 
 
 
-/*draws the USA, colours in each state based on 
- data within corresponding index of the data array, to the states array
- 
- use stroke() command before calling in main, if youd like to change the outline colour between states
+/* draws the USA, colours in each state based on 
+ * data within corresponding index of the data array, to the states array
+ *
+ * use stroke() command before calling in main, if youd like to change the outline colour between states
+ *
+ * -Ellen
  */
   void draw(int data[]) {
     shape(usaMap, MAP_X, MAP_Y);
@@ -93,10 +105,7 @@ public int heatMapColors(int dataPoint){
     else
     {
       text(current, 640, 50);
-    }
-    
-    
-    
+        
   
     
     for(int i = 0; i < usaStates.length;i++){
@@ -108,8 +117,6 @@ public int heatMapColors(int dataPoint){
     }
     
     
-    //ellipse(200, 200, 120, 120);
-    
     if(doPath) 
     {
     
@@ -117,13 +124,8 @@ public int heatMapColors(int dataPoint){
       this.flightPath.move();
     }
     
-    
-    
-    
-    
   }
   
-  //prints out a rectangle with the colour palette for each range, will add print statement for lower and upper ranges on the side of the rectangle later
   void rangePalette(){
  fill(#ffffff);
    //rect(1011, 47,110,50);
@@ -157,6 +159,7 @@ public int heatMapColors(int dataPoint){
    stroke(0);
    
    
+   // Labelling all states - Ellen
    fill(#ffe3ab);
     text("WA" ,150,71);
     text("OR", 123, 141);
@@ -269,6 +272,7 @@ public int heatMapColors(int dataPoint){
     stroke(0);
   }
   
+  // Added flight path generation - Dhruv and Ellen
   /*
    * void getPath
    *

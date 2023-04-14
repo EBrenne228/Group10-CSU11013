@@ -15,8 +15,18 @@ BarChart bc;
 PFont ourFont, widgetFont, glacialBig, tempFont;
 int [] flightsPerState = new int [50];
 
+ // CP5 library GUI tools: Drop down lists and radio buttons - Dhruv
+ControlP5 CP5;
+DropdownList dropDownList,  destinationDDL, dateDDL, airlineDDL, flightDDL;
+RadioButton radioButton, weekRB, airlineChartsRB;
 
-//chart variables
+
+
+/*
+ * Chart variables by Conor
+ * Booleans for dynamic labelling, titles and hover feature of Histograms and BarCharts
+ *
+ */
 float [] flightsFromOriginweekly;
 float [] flightsFromOriginDaily;
 float [] flightsToDestWeekly;
@@ -33,7 +43,7 @@ destAirport, destCity, destState, destWac, depCRS, depTime, flightCancel, flight
 byFilter, perFilter, largestAirlinesFilter;
 int airlineChart;
 
- // strings for dropDownLists and dynamic queries
+ // strings for dropDownLists and dynamic queries - Dhruv
 String origin = " ";
 String destination = " ";
 String date = " ";
@@ -53,18 +63,13 @@ String destCityForPath = " ";
 Screen homeScreen, chartScreen, heatMapScreen, pathScreen, currentScreen,arrivalsScreen,departuresScreen, airlinesChartsScreen, pathSelectionScreen;
 
 
-//widgets and buttons
+//widgets and buttons - Ellen
 Widget chartScreenButton,chartScreenButton_2,mapScreenButton, homeScreenButton,homeScreenButton_2,homeScreenButton_3, heatMapButton, heatMapButton_2,arrivalsButton_2,
 heatMapButton_3, flightsButton, departuresButton, arrivalsButton, airlinesChartsScreenButton, 
 pathSelectionScreenButton, pathsScreenButton, pathGenerateButton;
 
-  // CP5 library GUI tools: Drop down lists and radio buttons
-ControlP5 CP5;
-DropdownList dropDownList,  destinationDDL, dateDDL, airlineDDL, flightDDL;
-RadioButton radioButton, weekRB, airlineChartsRB;
 
-
-//loading screen variables
+//loading screen variables - Ellen
 boolean pause = false;
 boolean loadingScreen = true;
 boolean homePageUi = false;
@@ -90,20 +95,20 @@ void setup(){
   size(1280, 720);
   frameRate(90);
   
-  thread("loadFonts");   //loadind fonts on a separate thread, can run in the background while loading screen runs, easier to locate and change fonts
+  thread("loadFonts");   //loadind fonts on a separate thread, can run in the background while loading screen runs, easier to locate and change fonts - Dhruv
 
   db = new SQLite(this,"data/flights.sqlite");
   db.connect();
  
   
-  //set up for loading screen
+  //set up for loading screen - Ellen
   nonLoopingGif = new Gif(this, "gifgit_1.gif");
   nonLoopingGif.play();
   nonLoopingGif.ignoreRepeat();
   
   
   
-  // Set up of ControlP5 UI features
+  // Set up of ControlP5 UI features - Dhruv
   CP5 = new ControlP5(this);
   
   
@@ -175,7 +180,7 @@ void setup(){
                         .addItem("Top 10 Airlines to Divert", 3)
                         ;
                
-   // setting visibility of UI for loading and homepage - Dhruv
+   // setting visibility of CP5 UI for loading and homepage - Dhruv
    dropDownList.setVisible(false);
    destinationDDL.setVisible(false);
    dateDDL.setVisible(false);
@@ -185,7 +190,7 @@ void setup(){
    airlineChartsRB.setVisible(false);
    
    
-                                        
+   // setting up arrays to be passed to chart methods - Dhruv                                     
   stateList = new ArrayList<State>();
   cancelledByAirlines = new float[10];
   divertedByAirlines = new float [10];
@@ -203,7 +208,7 @@ void setup(){
   airlineListForPaths = new ArrayList <String>();
   
   
-   //initialising buttons
+   //initialising buttons - Ellen and Dhruv
    
        //home screen based buttons
 
@@ -213,7 +218,7 @@ void setup(){
    pathSelectionScreenButton = new Widget(920, 600, 180, 50, "Path Generator", widgetFont, EVENT_TO_PATH_SELECTION);
   
    
-   //heatMap based buttons
+   //heatMap based buttons - Ellen
    
    homeScreenButton = new Widget(1000, 500, 155, 50, "Home Screen", widgetFont, EVENT_TO_HOME);
    chartScreenButton_2 = new Widget(1000, 600, 125, 50, "Charts", widgetFont, EVENT_TO_CHARTS);
@@ -222,7 +227,7 @@ void setup(){
    arrivalsButton_2 = new Widget(1000, 400, 155, 50, "Arrivals", widgetFont, ARRIVALS);
 
    
-    //chart screen based buttons
+    //chart screen based buttons - Ellen
    homeScreenButton_2 = new Widget(30, 30, 90, 40, "Home", widgetFont, EVENT_TO_HOME);
    heatMapButton_2 = new Widget(1000, 300, 135, 50, "Totals", widgetFont, EVENT_TO_HEATMAPS);
       
@@ -248,6 +253,7 @@ void setup(){
                                                                                      // current screen changes to different screens as user interacts
    
    
+   // Adding buttons to their screens - Ellen and Dhruv
    
    homeScreen.addWidget(heatMapButton);
    homeScreen.addWidget(chartScreenButton);
@@ -255,10 +261,8 @@ void setup(){
    homeScreen.addWidget(pathSelectionScreenButton);
    
    chartScreen.addWidget(homeScreenButton_2);
-   //chartScreen.addWidget(heatMapButton_2);
-   
    heatMapScreen.addWidget(homeScreenButton);
-   //heatMapScreen.addWidget(chartScreenButton_2);
+
    
    heatMapScreen.addWidget(arrivalsButton);
    heatMapScreen.addWidget(departuresButton);
@@ -280,7 +284,7 @@ void setup(){
    currentScreen = homeScreen;
                    
 
-  //chart setup
+  //chart setup - Conor
   hoverBarChart = false;
   hoverCount = 0;
   drawBarChart = true;
@@ -305,7 +309,7 @@ void setup(){
   thread("initialQuery"); // runs inital queries/loading of data on a separate thread from the "Animation" thread. - Dhruv
   
   
- //setting up heatmap 
+ //setting up heatmap - Ellen
 
   final PShape USA = loadShape("Usa7.svg");
     alabama = USA.getChild("AL");
@@ -365,6 +369,7 @@ void setup(){
     new_mexico, new_york, north_carolina, north_dakota, ohio, oklahoma, oregon, pennsylvania, rhode_island, south_carolina, south_dakota, tennessee,
     texas, utah, vermont, virginia, washington, west_virginia, wisconsin, wyoming};
       
+     // different instances of America for HeatMaps and Flight Path Generator - Ellen
     usa = new America(USA, states);
     usa.current = "Flights per state";
     usa.setColourPalette(  #f9fafb,#edf8f6,#d3eee1,  #b8e6d3,#98ddca,#014734);
@@ -389,7 +394,7 @@ void setup(){
 }
 
 
-void loadFonts()  // loading in fonts, called in setup
+void loadFonts()  // loading in fonts, called in setup - Dhruv
 {
   tempFont = createFont("good-times-rg.otf", 20);
   widgetFont = tempFont;
@@ -544,6 +549,10 @@ void draw()
    *
    *  built-in controlP5 method (part of the conrolListener interface)
    *  Called when any CP5 object is interacted with
+   *  
+   *  Capitalised on this to make the appication more interactive overall, especially in relation to dynamic charts
+   *  and queries with varying parameters
+   *
    *  - Dhruv  
    *
    */
@@ -1002,6 +1011,8 @@ void controlEvent(ControlEvent theEvent)
    * called everytime mouse is clicked or "pressed"
    * implemented to interact with UI widgets
    * gets events from getEvent() method of screens
+   *
+   * - Dhruv and Ellen
    * 
    */
 void mousePressed()

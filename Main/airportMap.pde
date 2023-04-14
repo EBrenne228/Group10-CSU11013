@@ -5,7 +5,7 @@
    * using HashMap 'airportMap', uses a String as the key. the Value is an Airport object
    * HashMap Populated in setup in initialQuery(), name of the Airport being used as the key.
    * 
-   *  - Dhruv
+   *  - Dhruv and Ellen
    */
 
 void mapAirports()
