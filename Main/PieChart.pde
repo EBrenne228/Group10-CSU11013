@@ -1,6 +1,6 @@
  /*
    *
-   * Histogram Class Created by Conor
+   * PIEchart Class Created by Conor
    * Scales to different queries
    * Dynamic titles and labelling
    *
